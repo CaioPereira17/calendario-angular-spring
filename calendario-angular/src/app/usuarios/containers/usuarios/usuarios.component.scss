@@ -1,70 +1,142 @@
+// mat-card {
+//   max-width: 90%;
+//   margin: 2em auto;
+//   text-align: center;
+
+// }
+
+// .column-flex{
+//   display: flex;
+//   flex-direction: column;
+//   min-width: 600px;
+// }
+
+// mat-toolbar {
+//   max-width: 100%;
+//   margin-bottom: 3px;
+//   text-justify: auto;
+
+// }
+
+
+
+// .loading-spinner {
+//   padding: 25px;
+//   background: rgb(0, 0, 0, 0.15);
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// }
+
+// .campo-pesquisa{
+
+//   width: 85%;
+//   padding: 10px;
+//   margin: 10px;
+
+// }
+
+// .input-pesquisa-pessoa {
+//   width: 25%;
+//   margin: 10px;
+//   align-items: center;
+// }
+
+// .input-pesquisa-assessoria {
+//   width: 20%;
+//   margin: 10px;
+//   align-items: center;
+// }
+
+// .input-pesquisa::placeholder{
+//   font-size: 15px;
+//   padding: 10px;
+//   margin: 10px;
+
+// }
+
+// .input-pesquisa{
+
+//   width: 88%;
+//   height: 8%;
+//   padding: 10px;
+//   margin: 10px;
+
+
+// }
+
+
+
+
 mat-card {
   max-width: 90%;
   margin: 2em auto;
   text-align: center;
-
 }
 
-.column-flex{
+/*
+ * ATENÇÃO: A regra 'min-width: 600px' pode quebrar o layout em celulares,
+ * pois impede que o elemento fique mais estreito que 600px.
+ * Removi a regra para garantir a responsividade.
+*/
+.column-flex {
   display: flex;
   flex-direction: column;
-  min-width: 600px;
 }
 
 mat-toolbar {
   max-width: 100%;
   margin-bottom: 3px;
-  text-justify: auto;
-
+  /* Adicionando flexbox para alinhar o conteúdo da toolbar */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
 }
-
-
 
 .loading-spinner {
   padding: 25px;
-  background: rgb(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.15); /* Corrigido para rgba */
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.campo-pesquisa{
+/* ========================================= */
+/* === CORREÇÃO DA ÁREA DE PESQUISA      === */
+/* ========================================= */
 
-  width: 85%;
-  padding: 10px;
-  margin: 10px;
-
-}
-
-.input-pesquisa-pessoa {
-  width: 25%;
-  margin: 10px;
+/* 1. Transforma o container em um layout flexível */
+.campo-pesquisa {
+  margin-top: 5px;
+  display: flex;
+  flex-wrap: wrap;        /* Permite que os campos quebrem a linha */
+  gap: 10px;              /* Cria um espaçamento consistente entre os campos */
   align-items: center;
+  flex-grow: 1;           /* Faz o container ocupar o espaço disponível */
+  min-width: 300px;       /* Evita que fique muito espremido */
 }
 
+/* 2. Faz os campos de input serem flexíveis e responsivos */
+.input-pesquisa-pessoa,
 .input-pesquisa-assessoria {
-  width: 20%;
-  margin: 10px;
-  align-items: center;
+  /*
+   * A "mágica" da responsividade:
+   * flex: 1 1 200px -> Permite crescer, encolher e define um tamanho base.
+  */
+  flex: 1 1 200px;
 }
 
-.input-pesquisa::placeholder{
+/* 3. Estilo para o campo de texto interno (ex: filtro de um select) */
+.input-pesquisa {
+  /* Evita larguras e margens que quebram o layout */
+  width: 95%;
+  padding: 8px;
+  margin: 5px;
+  box-sizing: border-box;
+}
+
+.input-pesquisa::placeholder {
   font-size: 15px;
-  padding: 10px;
-  margin: 10px;
-
 }
-
-.input-pesquisa{
-
-  width: 88%;
-  height: 8%;
-  padding: 10px;
-  margin: 10px;
-
-
-}
-
-
-
-

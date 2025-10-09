@@ -11,7 +11,7 @@ import { environment } from '../../../environments/environment';
 })
 export class VideoConferenciasService {
 
-  private readonly API = `${environment.apiUrl}/api/videoConferencias`;
+  private readonly API = `${environment.apiUrl}api/videoConferencias`;
   private readonly APIPESQ = `${environment.apiUrl}api/videoConferencias/search`;
 
   constructor(private readonly httpClient: HttpClient) { }

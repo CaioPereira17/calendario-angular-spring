@@ -48,10 +48,13 @@ export class UsuariosInativosComponent implements OnInit {
   }
 
   carregarUsuariosInativas(): void {
+    console.log('entrou')
     this.usuariosService.listarInativas(this.pageIndex, this.pageSize).subscribe({
       next: (data) => {
+        console.log('entrou')
         this.usuariosInativos = data.pessoas;
         this.totalElements = data.totalElements;
+        console.log('Usuarios inativas carregadas:', this.usuariosInativos);
       },
       error: (err) => console.error('Erro ao carregar usuarios inativas', err),
     });

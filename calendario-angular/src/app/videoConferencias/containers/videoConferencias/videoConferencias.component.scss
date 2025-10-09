@@ -3,65 +3,63 @@ mat-card {
   padding: 15px;
   margin: 2em auto;
   text-align: center;
-
 }
 
-.column-flex{
+/*
+ * Configuração da Toolbar para distribuir o espaço
+ */
+mat-toolbar {
+  /* Alinha o título à esquerda e o campo de pesquisa à direita */
+  justify-content: space-between;
+  /* Garante que os itens possam quebrar a linha em telas pequenas */
+  flex-wrap: wrap;
+  /* Adiciona um espaçamento se os itens quebrarem a linha */
+  gap: 15px;
+  /* Evita que a altura da toolbar mude drasticamente */
+  min-height: 64px;
+  /* Ajusta o padding para acomodar melhor os campos */
+  padding: 8px 16px;
+  height: auto; /* Permite que a altura se ajuste ao conteúdo */
+}
+
+/*
+ * Container dos campos de pesquisa
+ */
+.campo-pesquisa {
   display: flex;
-  flex-direction: column;
+  /* Permite que os campos quebrem para a linha de baixo se não houver espaço */
+  flex-wrap: wrap;
+  /* Espaçamento consistente entre os campos de pesquisa */
+  gap: 10px;
+  /* Faz o container crescer para ocupar o espaço disponível */
+  flex-grow: 1;
+  /* Alinha os itens ao centro verticalmente */
+  align-items: center;
+  /* Define uma largura mínima para evitar que fiquem muito espremidos */
   min-width: 300px;
 }
 
-mat-toolbar {
-  max-width: 100%;
-  margin-bottom: 3px;
-  text-justify: auto;
-
+/*
+ * Estilo unificado para todos os campos de formulário dentro da pesquisa
+ */
+.input-pesquisa-assessoria,
+.input-pesquisa-data {
+  /*
+   * A "mágica" do flexbox responsivo:
+   * flex-grow: 1 -> Permite que o item cresça para ocupar o espaço livre.
+   * flex-shrink: 1 -> Permite que o item encolha se necessário.
+   * flex-basis: 200px -> Define o tamanho "ideal" inicial do item.
+  */
+  flex: 1 1 200px;
 }
 
+/*
+ * Estilos para o spinner de carregamento (já estavam bons)
+ */
 .loading-spinner {
   padding: 25px;
   background: rgb(0, 0, 0, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.campo-pesquisa{
-
-  width: 85%;
-  padding: 10px;
-  margin: 10px;
-
-}
-
-.input-pesquisa-assessoria {
-  width: 25%;
-  margin: 10px;
-  align-items: center;
-}
-
-.input-pesquisa-data {
-  width: 25%;
-  margin: 10px;
-  align-items: center;
-}
-
-.input-pesquisa::placeholder{
-
-
-  font-size: 15px;
-  padding: 10px;
-  margin: 10px;
-
-}
-
-.input-pesquisa{
-
-  width: 88%;
-  height: 8%;
-  padding: 10px;
-  margin: 10px;
-
-
 }

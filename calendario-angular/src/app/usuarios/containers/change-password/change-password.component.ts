@@ -1,10 +1,17 @@
 import { Component, Inject } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { UsuariosService } from '../../services/usuarios.service';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { MatError, MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatInput, MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
+import { MatCard, MatCardActions, MatCardContent } from '@angular/material/card';
+import { MatToolbar } from '@angular/material/toolbar';
+import { MatButton } from '@angular/material/button';
+import { MatOption } from '@angular/material/core';
+import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { MatSelect } from '@angular/material/select';
+import { IMaskDirective } from 'angular-imask';
 
 
 @Component({
@@ -12,7 +19,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './change-password.component.html',
   styleUrl: './change-password.component.scss',
   standalone: true,
-    imports: [ MatFormFieldModule, MatInputModule, MatDialogModule, ReactiveFormsModule, CommonModule]
+    imports: [ MatFormFieldModule, MatInputModule, MatDialogModule, ReactiveFormsModule, CommonModule, MatCard, MatToolbar, MatCardContent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, IMaskDirective, MatError, MatSelect, MatOption, MatRadioGroup, MatRadioButton, MatCardActions, MatButton]
 })
 export class ChangePasswordComponent {
 

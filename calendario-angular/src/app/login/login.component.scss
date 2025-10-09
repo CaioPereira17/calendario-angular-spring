@@ -11,16 +11,15 @@
 }
 
 .login-image {
-  width: 50%;
-  flex: 1;
+  flex: 1; /* Equivalente a width: 50% em um flex container com 2 filhos */
   text-align: center;
+}
 
-  img {
-    max-width: 50%;
-    margin-top: 20px;
-    height: auto;
-    border-radius: 8px;
-  }
+.login-image img {
+  max-width: 50%;
+  margin-top: 20px;
+  height: auto;
+  border-radius: 8px;
 }
 
 .text-img {
@@ -34,78 +33,38 @@
 .login-form {
   flex: 1;
   padding: 0 20px;
-
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #3f51b5;
-  }
-
-  .full-width {
-    width: 100%;
-    margin-bottom: 20px;
-  }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-mat-card {
-  width: 30%;
-  margin: 0 auto;
+.login-form h2 {
   text-align: center;
-  padding: 20px;
-  color: darkgoldenrod;
-  font-size : 20px;
-  background-color: aliceblue;
+  margin-bottom: 20px;
+  color: #3f51b5;
 }
 
-.form-label {
-  font-size: 20px;
-  font-weight: bold;
-}
-
-:host {
-  display: flex;
-  justify-content: center;
-  margin: 100px 0px;
-}
-
-.mat-form-field {
+.login-form .full-width {
   width: 100%;
-  min-width: 300px;
+  margin-bottom: 20px;
 }
 
-mat-card-title,
-mat-card-content {
-  display: flex;
-  justify-content: center;
-  font-size: 20px;
-  font-weight: bold;
+/* ========================================= */
+/* === REGRAS DE RESPONSIVIDADE PARA TELAS MENORES === */
+/* ========================================= */
+@media (max-width: 768px) {
+  .login-content {
+    /* Muda a direção para vertical */
+    flex-direction: column;
+    /* Adiciona um espaço entre a imagem e o formulário */
+    gap: 30px;
+  }
 
-}
+  .login-image,
+  .login-form {
+    /* Faz a imagem e o formulário ocuparem a largura total */
+    width: 100%;
+    padding: 0; /* Remove o padding lateral do formulário no mobile */
+  }
 
-.error {
-  padding: 16px;
-  width: 300px;
-  color: white;
-  background-color: red;
-}
-
-.button {
-  display: flex;
-  justify-content: flex-end;
-
+  .login-image img {
+    max-width: 60%; /* Aumenta um pouco a imagem para melhor visualização */
+  }
 }

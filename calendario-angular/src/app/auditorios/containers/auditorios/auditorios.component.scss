@@ -1,67 +1,94 @@
+/* =================================
+   Layout Principal da Página
+   ================================= */
 mat-card {
   max-width: 90%;
   padding: 15px;
   margin: 2em auto;
   text-align: center;
-
 }
 
-.column-flex{
+/* =================================
+   Barra de Ferramentas (Toolbar)
+   ================================= */
+mat-toolbar {
+  /* Organiza o título e a área de pesquisa com espaço entre eles */
+  justify-content: space-between;
+  /* Permite que a barra de pesquisa quebre para a linha de baixo em telas pequenas */
+  flex-wrap: wrap;
+  /* Adiciona um espaçamento caso os itens quebrem a linha */
+  gap: 15px;
+  /* Garante uma altura mínima, mas permite crescer se necessário */
+  min-height: 64px;
+  height: auto;
+  /* Ajusta o padding para um visual melhor */
+  padding: 8px 16px;
+  margin-bottom: 3px;
+}
+
+/* =================================
+   Área de Pesquisa
+   ================================= */
+.campo-pesquisa {
+  display: flex;
+  flex-wrap: wrap;
+  /* Espaçamento consistente de 10px entre os campos */
+  gap: 10px;
+  /* Faz o container crescer para ocupar o espaço disponível na toolbar */
+  flex-grow: 1;
+  /* Alinha os campos verticalmente */
+  align-items: center;
+  /* Define uma largura mínima para evitar que os campos fiquem muito espremidos */
+  min-width: 300px;
+}
+
+/*
+ * Estilo unificado para os containers dos campos de formulário.
+ * A propriedade 'flex' os torna responsivos.
+*/
+.input-pesquisa-assessoria,
+.input-pesquisa-data {
+  /*
+   * Chave da responsividade:
+   * flex-grow: 1 -> Permite crescer
+   * flex-shrink: 1 -> Permite encolher
+   * flex-basis: 200px -> Tamanho inicial ideal
+  */
+  flex: 1 1 200px;
+}
+
+/*
+ * Estilo para o campo de texto usado para filtrar o mat-select.
+ * Evitamos margens e larguras que quebram o layout.
+*/
+.input-pesquisa {
+  width: 95%; /* Ocupa quase todo o espaço do painel do select */
+  padding: 8px;
+  margin: 5px; /* Pequena margem interna para não colar nas bordas */
+  box-sizing: border-box;
+}
+
+.input-pesquisa::placeholder {
+  font-size: 15px;
+}
+
+/* =================================
+   Classes Utilitárias e de Status
+   ================================= */
+
+/* Para organizar elementos em uma coluna flexível */
+.column-flex {
   display: flex;
   flex-direction: column;
   min-width: 300px;
 }
 
-mat-toolbar {
-  max-width: 100%;
-  margin-bottom: 3px;
-  text-justify: auto;
-
-}
-
+/* Animação de carregamento (Spinner) */
 .loading-spinner {
   padding: 25px;
-  background: rgb(0, 0, 0, 0.15);
+  /* Corrigido para 'rgba' para suportar transparência */
+  background: rgba(0, 0, 0, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.campo-pesquisa{
-
-  width: 85%;
-  padding: 10px;
-  margin: 10px;
-
-}
-
-.input-pesquisa-assessoria {
-  width: 25%;
-  margin: 10px;
-  align-items: center;
-}
-
-.input-pesquisa-data {
-  width: 25%;
-  margin: 10px;
-  align-items: center;
-}
-
-.input-pesquisa::placeholder{
-
-
-  font-size: 15px;
-  padding: 10px;
-  margin: 10px;
-
-}
-
-.input-pesquisa{
-
-  width: 88%;
-  height: 8%;
-  padding: 10px;
-  margin: 10px;
-
-
 }
