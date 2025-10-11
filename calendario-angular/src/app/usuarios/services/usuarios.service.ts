@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { first, Observable, } from 'rxjs';
 import { Usuario } from '../model/usuario';
 import { UsuarioPage } from '../model/usuario-page';
@@ -44,7 +44,15 @@ export class UsuariosService {
       params: { page, pageSize }
     });
   }
+userIsLogged(){
+    const token = localStorage.getItem('token'); 
 
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    return this.httpClient.get<boolean>('api/usuarios/estaLogado', { headers });
+    }
 
   listUsuCompl() {
 

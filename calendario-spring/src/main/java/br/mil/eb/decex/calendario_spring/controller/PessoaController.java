@@ -1,6 +1,13 @@
 package br.mil.eb.decex.calendario_spring.controller;
 import java.util.List;
 
+import br.mil.eb.decex.calendario_spring.config.JwtServiceGenerator;
+import br.mil.eb.decex.calendario_spring.dto.UsuarioDTO;
+import br.mil.eb.decex.calendario_spring.dto.mapper.PessoaMapper;
+import br.mil.eb.decex.calendario_spring.dto.mapper.UsuarioMapper;
+import br.mil.eb.decex.calendario_spring.modelo.Usuario;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,19 +43,29 @@ import jakarta.validation.constraints.PositiveOrZero;
 public class PessoaController {
     
     private final PessoaRepository pessoaRepository;
-    private final PessoaService pessoaService;    
-    
+    private final PessoaService pessoaService;
+    private final PessoaMapper  pessoaMapper;
+    private final UsuarioMapper usuarioMapper;
+
+    @Autowired
+    private JwtServiceGenerator jwtServiceGenerator;
+
+
     @Autowired
     private PessoaTIInfoRepository pessoaTIInfoRepository;
 
-    public PessoaController(PessoaRepository pessoaRepository, PessoaService pessoaService) {
+    public PessoaController(PessoaRepository pessoaRepository, PessoaService pessoaService, PessoaMapper pessoaMapper, UsuarioMapper usuarioMapper) {
         this.pessoaRepository = pessoaRepository;
         this.pessoaService = pessoaService;
+        this.pessoaMapper = pessoaMapper;
+        this.usuarioMapper = usuarioMapper;
     }
-
+    //Todo pegar usuário logado no momento, se não tiver logado retorna lança erro e se tiver logado ver qual perfil a pessoa tem
+    //Privamos usuários deslogados de reativar pessoas desativadas.
     @PutMapping("/reativar/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void reativarPessoa(@PathVariable Long id) {
+    public void reativarPessoa(HttpServletRequest request, @PathVariable Long id) {
+        Usuario Logado = jwtServiceGenerator.GetUser(request);
     Pessoa pessoa = pessoaRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Pessoa não encontrada"));
     pessoa.setLiberado(true);

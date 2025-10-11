@@ -8,6 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import br.mil.eb.decex.calendario_spring.repository.UsuarioRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +21,16 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class JwtServiceGenerator {  
+public class JwtServiceGenerator {
+
+    @Autowired
+    private UsuarioRepository UserRes;
 
   @SuppressWarnings("deprecation")
-public String generateToken(Usuario userDetails) {
+    public String generateToken(Usuario userDetails) {
 	
 	  
 	  //AQUI VOCÊ PODE COLOCAR O QUE MAIS VAI COMPOR O PAYLOAD DO TOKEN
@@ -82,5 +91,17 @@ public String generateToken(Usuario userDetails) {
       final Claims claims = extractAllClaims(token);
       return claimsResolver.apply(claims);
   }
+
+  public Usuario GetUser(HttpServletRequest request){
+      String token = request.getHeader("Authorization");
+      if(token != null && token.startsWith("Bearer ") ){
+          String clearT = token.substring(7);
+          String Username= extractUsername(clearT);
+          return this.UserRes.findByUsername(Username).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "USER NOT FOUND"));
+      }
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid token");
+  }
+
+
 
 }

@@ -13,6 +13,9 @@ import { PessoasListaComponent } from '../pessoas-lista/pessoas-lista.component'
 import { MatTableModule } from '@angular/material/table';
 import { PostoGraduacao, PostoGraduacaoList } from '../../../enums/PostoGraduacao/PostoGraduacao';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { UsuariosService } from '../../../usuarios/services/usuarios.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-pessoas-inativas',
@@ -32,15 +35,30 @@ export class PessoasInativasComponent implements OnInit {
   pageIndex = 0;
 
   readonly displayedColumns = ['identidade', 'nome', 'postoGraduacao', 'nomeGuerra', 'acoes'];
+  errorMessage: string | null = null;
+
 
   postos = PostoGraduacaoList;
    selectedPosto = PostoGraduacao.GEN_EXERCITO;
 
-  constructor(private pessoasService: PessoasService) {}
+  constructor(private snackBar: MatSnackBar, private pessoasService: PessoasService, private router: Router, private usuariosService: UsuariosService) {}
 
-  ngOnInit(): void {
-    this.carregarPessoasInativas();
-  }
+ ngOnInit(): void {
+  this.usuariosService.userIsLogged().subscribe({
+    next: (isLogged) => {
+      if (!isLogged) {
+        this.router.navigate(['/']);
+        return;
+      }
+      this.carregarPessoasInativas();
+    },
+    error: (err) => {
+      console.error('Erro ao verificar login:', err);
+      this.router.navigate(['/']);
+    }
+  });
+}
+    
 
   carregarPessoasInativas(): void {
     this.pessoasService.listarInativas(this.pageIndex, this.pageSize).subscribe({
@@ -53,6 +71,7 @@ export class PessoasInativasComponent implements OnInit {
   }
 
   reativarPessoa(id: number | undefined): void {
+    this.errorMessage = null; // Reset error message
     if (!id) {
       console.error('ID inválido para reativação:', id);
       return;
@@ -60,10 +79,20 @@ export class PessoasInativasComponent implements OnInit {
 
     this.pessoasService.reativarPessoa(id).subscribe({
       next: () => {
-        alert('Pessoa reativada com sucesso!');
+         this.snackBar.open(`✅ Pessoa reativada com sucesso!`, 'Fechar', {
+        duration: 4000,
+        panelClass: ['error-snackbar']
+      });
         this.carregarPessoasInativas(); // Recarrega a lista após reativação
       },
-      error: (err) => console.error('Erro ao reativar pessoa:', err),
+      error: (err) => { 
+        console.error('Erro ao reativar pessoa:', err);
+            this.errorMessage = err.message ='U R NOT ADMIN';
+            this.snackBar.open(`❌ Erro: ${this.errorMessage}`, 'Fechar', {
+        duration: 4000,
+        panelClass: ['error-snackbar']
+      });
+          }
     });
   }
 

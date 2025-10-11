@@ -50,9 +50,8 @@ public class SecurityConfig  {
             	// .requestMatchers("/api/pessoas/reativar/**").hasAuthority("ROLE_ADMINISTRADOR") // Libera o reativar para ADMIN
 				// .requestMatchers("/api/usuarios/reativar/**").hasAuthority("ROLE_ADMINISTRADOR") // Libera o reativar para ADMIN
 				// .requestMatchers("/api/usuarios/**").hasAuthority("ROLE_ADMINISTRADOR") // Libera o reativar para ADMIN				
-				.requestMatchers("/api/**").hasAuthority("ROLE_ADMINISTRADOR") // Acesso irrestrito para ADMINISTRADOR
-				.requestMatchers("/api/**").hasAuthority("ROLE_TI") // Acesso irrestrito para ADMINISTRADOR
-				.requestMatchers("/api/pessoas/**/ti-info").hasAnyAuthority("TI", "ADMINISTRADOR") // Sem "ROLE_"
+                .requestMatchers("/api/**").hasAnyAuthority("ROLE_ADMINISTRADOR", "ROLE_TI")
+				.requestMatchers("/api/pessoas/*/ti-info").hasAnyAuthority("TI", "ADMINISTRADOR") // Sem "ROLE_"
 				.anyRequest().authenticated())
 		.authenticationProvider(authenticationProvider)
 		.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

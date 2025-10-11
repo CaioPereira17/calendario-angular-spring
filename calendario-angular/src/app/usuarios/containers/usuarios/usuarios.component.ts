@@ -104,6 +104,8 @@ filterSelectDeUsuarios(event: Event) {
   }
 }
 
+
+
 refresh(pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 }, termo = '') {
   this.usuarios$ = this.usuariosService.list(termo, pageEvent.pageIndex, pageEvent.pageSize).pipe(
     tap((response: UsuarioPage) => {

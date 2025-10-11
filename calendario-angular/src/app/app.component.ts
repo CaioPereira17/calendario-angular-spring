@@ -74,7 +74,6 @@ export class AppComponent implements OnInit {
   // Método de logout
   logout() {
     this.loginService.logout();
-    alert('Logout realizado com sucesso');
     window.location.reload();
   }
 

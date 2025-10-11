@@ -1,6 +1,8 @@
 package br.mil.eb.decex.calendario_spring.controller;
 import java.util.List;
 
+import br.mil.eb.decex.calendario_spring.config.JwtServiceGenerator;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -34,12 +36,14 @@ public class UsuarioController {
     
     private final UsuarioRepository usuarioRepository;
     private final UsuarioService usuarioService;    
-    
+
+    private final JwtServiceGenerator jwtServiceGenerator;
     
 
-    public UsuarioController(UsuarioRepository usuarioRepository, UsuarioService usuarioService) {
+    public UsuarioController(UsuarioRepository usuarioRepository, UsuarioService usuarioService, JwtServiceGenerator jwtServiceGenerator) {
         this.usuarioRepository = usuarioRepository;
         this.usuarioService = usuarioService;
+        this.jwtServiceGenerator = jwtServiceGenerator;
     }
 
 
@@ -79,7 +83,15 @@ public class UsuarioController {
         .orElseThrow(() -> new RuntimeException("Usuario não encontrada"));
     usuario.setLiberado(true);
     usuarioRepository.save(usuario);
-}  
+}
+
+    @GetMapping("/estaLogado")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Boolean> isLoggedIn(HttpServletRequest request) {
+        Usuario Logado = jwtServiceGenerator.GetUser(request);
+        return ResponseEntity.ok(Logado != null);
+
+    }
 
     @PutMapping("/alterar-senha")
     public ResponseEntity<Void> alterarSenha(@RequestParam String senhaAtual, @RequestParam String novaSenha) {
