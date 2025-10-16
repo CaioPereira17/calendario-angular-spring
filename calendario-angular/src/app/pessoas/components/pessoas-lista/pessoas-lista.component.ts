@@ -51,17 +51,19 @@ export class PessoasListaComponent implements OnInit {
 
   constructor(private dialog: MatDialog, private loginService: LoginService, private cdRef: ChangeDetectorRef){  }
 
-
+ //alteração feita por Cabo Caio e Sgt Faro 
 
   ngOnInit(): void {
     // Initialization logic can be added here if needed
-    console.log('PessoasListaComponent initialized');
+    //Anotação  Caio Remover
+    console.log('Funcionou aqui !');
     this.checkUserPermission();
   }
 
   checkUserPermission() {
-    this.userHasPermission = this.loginService.hasPermission('TI') || this.loginService.hasPermission('ADMINISTRADOR'); 
-    console.log(this.userHasPermission);// Verifica se o usuário tem a role "TI"
+    this.userHasPermission = this.loginService.hasPermission('TI') || this.loginService.hasPermission('ADMINISTRADOR') || this.loginService.hasPermission('DIV_PESS'); 
+    //Anotação  Caio Remover
+    //console.log(this.userHasPermission);// Verifica se o usuário tem a role "TI"
     this.cdRef.detectChanges(); // Força o Angular a detectar a mudança
   }
 

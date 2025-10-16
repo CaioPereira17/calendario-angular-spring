@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * @author <b>Vanilton</b> Gomes dos Santos - 2º Sgt QE
  * @version 1.1 (Incluído perfil AUDITORIO)
  */
-public enum TipoAcesso {
+public enum     TipoAcesso {
 	ADMINISTRADOR("Administrador"),
 	DIV_PESS("Divisão de Pessoal"),
 	AGENDAMENTO("Agendamento"),

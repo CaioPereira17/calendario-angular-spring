@@ -10,49 +10,49 @@
 <p></p>
 <mat-nav-list >
   <h2 matSubheader style="border-radius: 10px; background-color: antiquewhite; ">{{ 'LISTAR'  }}</h2>
-  <mat-list-item>
+  <mat-list-item *ngIf="isAdmin || isTi || isDivPess || isUsuario">
     <a class="menu-item" (click)="navigateTo('pessoas')" routerLinkActive="active-link">
       <mat-icon class="menu-icon">list</mat-icon>
       <span class="menu-text">Pessoas</span>
     </a>
   </mat-list-item>
-
-  <mat-list-item>
+<!--Caio modificação-->
+  <mat-list-item *ngIf="isAdmin">
     <a class="menu-item" (click)="navigateTo('inativas')" routerLinkActive="active-link">
       <mat-icon class="menu-icon">list</mat-icon>
       <span class="menu-text">Pessoas Inativadas</span>
     </a>
   </mat-list-item>
 
-  <mat-list-item>
+  <mat-list-item *ngIf="isAdmin">
     <a class="menu-item" (click)="navigateTo('usuarios')" routerLinkActive="active-link">
       <mat-icon class="menu-icon">list</mat-icon>
       <span class="menu-text">Usuários</span>
     </a>
   </mat-list-item>
 
-  <mat-list-item>
+  <mat-list-item *ngIf="isAdmin">
     <a class="menu-item" (click)="navigateTo('usuarios/inativos')" routerLinkActive="active-link">
       <mat-icon class="menu-icon">list</mat-icon>
       <span class="menu-text">Usuários Inativados</span>
     </a>
   </mat-list-item>
 
-  <mat-list-item>
+  <mat-list-item *ngIf="isAdmin">
     <a class="menu-item" (click)="navigateTo('assessorias')" routerLinkActive="active-link">
       <mat-icon class="menu-icon">list</mat-icon>
       <span class="menu-text">Assessorias</span>
     </a>
   </mat-list-item>
 
-  <mat-list-item>
+  <mat-list-item *ngIf="isAdmin || isAgendamento || isUsuario">
     <a class="menu-item" (click)="navigateTo('auditorios')" routerLinkActive="active-link">
       <mat-icon class="menu-icon">list</mat-icon>
       <span class="menu-text">Agendamentos Auditório</span>
     </a>
   </mat-list-item>
 
-  <mat-list-item>
+  <mat-list-item *ngIf="isAdmin || isAgendamento">
     <a class="menu-item" (click)="navigateTo('videoConferencias')" routerLinkActive="active-link">
       <mat-icon class="menu-icon">list</mat-icon>
       <span class="menu-text">Agendamentos Videoconferência</span>
@@ -66,14 +66,14 @@
 <mat-nav-list >
   <h2 matSubheader style=" border-radius: 10px; background-color: antiquewhite; ">{{ 'CADASTRAR'  }}</h2>
 
-  <mat-list-item>
+  <mat-list-item *ngIf="isAdmin">
     <a class="menu-item" (click)="navigateTo('pessoas/new')" routerLinkActive="active-link">
       <mat-icon class="menu-icon">save</mat-icon>
       <span class="menu-text">Pessoas</span>
     </a>
   </mat-list-item>
 
-  <mat-list-item>
+  <mat-list-item *ngIf="isAdmin">
     <a class="menu-item" (click)="navigateTo('usuarios/new')" routerLinkActive="active-link">
       <mat-icon class="menu-icon">save</mat-icon>
       <span class="menu-text">Usuários</span>
@@ -87,21 +87,21 @@
     </a>
   </mat-list-item>
 
-  <mat-list-item>
+  <mat-list-item *ngIf="isAdmin">
     <a class="menu-item" (click)="navigateTo('assessorias/new')" routerLinkActive="active-link">
       <mat-icon class="menu-icon">save</mat-icon>
       <span class="menu-text">Assessorias</span>
     </a>
   </mat-list-item>
 
-  <mat-list-item>
+  <mat-list-item *ngIf="isAdmin || isAgendamento">
     <a class="menu-item" (click)="navigateTo('auditorios/new')" routerLinkActive="active-link">
       <mat-icon class="menu-icon">schedule</mat-icon>
       <span class="menu-text">Agendamentos Auditório</span>
     </a>
   </mat-list-item>
 
-  <mat-list-item>
+  <mat-list-item *ngIf="isAdmin || isAgendamento">
     <a class="menu-item" (click)="navigateTo('videoConferencias/new')" routerLinkActive="active-link">
       <mat-icon class="menu-icon">schedule</mat-icon>
       <span class="menu-text">Agendamentos Videoconferência</span>
