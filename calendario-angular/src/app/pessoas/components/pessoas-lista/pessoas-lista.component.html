@@ -6,13 +6,13 @@
       <mat-header-cell *matHeaderCellDef class="column-header">Foto</mat-header-cell>
       <mat-cell *matCellDef="let pessoa" class="column-foto">
         @if (pessoa.caminho) {
-          <img [src]="pessoa.caminho" (error)="onImageError($event)" alt="Foto de {{pessoa.identidade}}"
-            class="img-profile" />
+        <img [src]="pessoa.caminho" (error)="onImageError($event)" alt="Foto de {{pessoa.identidade}}"
+          class="img-profile" />
         }
       </mat-cell>
     </ng-container>
 
-    <!-- Identidade -->
+    <!-- Identidade verssão vava-->
     <ng-container matColumnDef="identidade">
       <mat-header-cell *matHeaderCellDef class="column-header">Identidade</mat-header-cell>
       <mat-cell *matCellDef="let pessoa"> {{ pessoa.identidade }} </mat-cell>
@@ -59,7 +59,7 @@
         <!--Caio modificação-->
         <!-- //Botão verde de add pessoas na lista de ramais. -->
         <button V class="button-add" (click)="onAdd()" mat-icon-button color="primary" *ngIf="userHasPermission">
-          <mat-icon >add</mat-icon>
+          <mat-icon>add</mat-icon>
         </button>
       </mat-header-cell>
 

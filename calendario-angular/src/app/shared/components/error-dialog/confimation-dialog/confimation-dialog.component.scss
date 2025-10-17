@@ -1,0 +1,29 @@
+/* Regra para o TÍTULO do diálogo.
+  Selecionamos o h2 que tem o atributo [mat-dialog-title] para sermos bem específicos.
+*/
+
+//Organização da caixa de saída do sistema. //Caio remover
+:host ::ng-deep h2[mat-dialog-title] {
+  text-align: center;
+}
+
+/* Regra para o CONTEÚDO (a mensagem).
+  Selecionamos a tag <p> dentro do conteúdo para garantir a centralização.
+*/
+:host ::ng-deep mat-dialog-content p {
+  text-align: center;
+  width: 100%;
+  margin: 0;
+}
+
+/* Regras de espaçamento para deixar o visual mais agradável.
+*/
+:host ::ng-deep mat-dialog-content {
+  padding: 20px 0;
+}
+
+:host ::ng-deep mat-dialog-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}

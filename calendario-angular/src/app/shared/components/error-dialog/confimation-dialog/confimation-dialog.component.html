@@ -1,7 +1,21 @@
-<mat-dialog-content>
+<!-- //Versão vanilton -->
+<!-- <mat-dialog-content>
   <p>{{ data }}</p>
 </mat-dialog-content>
 <mat-dialog-actions align="center">
   <button mat-raised-button color="primary" (click)="onConfirm(true)">Sim</button>
   <button mat-raised-button color="warn " (click)="onConfirm(false)">Não</button>
+</mat-dialog-actions> -->
+
+<!-- //Caio Adição - Ajuste do diálogo de confirmação -->
+<h2 mat-dialog-title>Confirmar Ação</h2>
+
+<mat-dialog-content>
+  <p>{{ data }}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onConfirm(false)">Não</button>
+  
+  <button mat-raised-button color="primary" (click)="onConfirm(true)" cdkFocusInitial>Sim</button>
 </mat-dialog-actions>
