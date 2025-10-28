@@ -15,6 +15,9 @@ $custom-theme: mat.define-light-theme((
   typography: mat.define-typography-config(),
 ));
 
+
+/////
+
 // Exporte as cores para uso em outros arquivos
 $colors: (
   primary: $custom-primary,
