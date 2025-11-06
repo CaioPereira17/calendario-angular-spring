@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import br.mil.eb.decex.calendario_spring.modelo.Pessoa;
 
+import java.util.Optional;
+
 @Repository
 public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
 
@@ -29,6 +31,8 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
 
     @Query("SELECT p FROM Pessoa p WHERE p.liberado = false")
     Page<Pessoa> findInativas(Pageable pageable);
+
+    Optional<Pessoa> findByIdentidade(String idt);
 
     // Page<Pessoa> findAllByLiberadoFalse(Pageable pageable);
 

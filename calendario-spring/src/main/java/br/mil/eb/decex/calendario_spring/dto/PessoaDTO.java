@@ -11,56 +11,56 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public record PessoaDTO(
-     @JsonProperty("_id")
-    Long id,
+        @JsonProperty("_id")
+        Long id,
 
-    @NotBlank
-    @NotNull
-    @Pattern(regexp = "^\\d{3}\\.\\d{3}\\.\\d{3}-\\d$", message = "Formato de identidade inválido. Deve estar no formato 000.000.000-0.")
-    String identidade,
+        @NotBlank
+        @NotNull
+        @Pattern(regexp = "^\\d{9}-\\d{1}$", message = "Formato da identidade inválido. Deve estar no formato 000000000-0")
+        String identidade,
 
-    Users users,
+        Users users,
 
-    @NotBlank
-    @NotNull
-    String nome,
+        @NotBlank
+        @NotNull
+        String nome,
 
-    @NotBlank
-    @NotNull
-    String nomeGuerra,
-
-
-    @NotNull
-    PostoGraduacao postoGraduacao,
-
-     //
-     // NOVO CAMPO ADICIONADO AQUI
-     //
-     @NotBlank // (Equivalente ao Validators.required)
-     @NotNull  // (Equivalente ao Validators.required)
-     String armaquadroservico,
+        @NotBlank
+        @NotNull
+        String nomeGuerra,
 
 
-    @NotNull
-    Assessoria assessoria,
+        @NotNull
+        PostoGraduacao postoGraduacao,
+
+        //
+        // NOVO CAMPO ADICIONADO AQUI
+        //
+        @NotBlank // (Equivalente ao Validators.required)
+        @NotNull  // (Equivalente ao Validators.required)
+        String armaquadroservico,
 
 
-    @NotNull
-    Boolean liberado,
+        @NotNull
+        Assessoria assessoria,
 
 
-    @NotNull
-    TipoAcesso tipoAcesso,
-    @Pattern(regexp = "^810 - \\d{4}$", message = "Formato do ramal inválido. Deve estar no formato 000 - 0000")
-    String ramal,
+        @NotNull
+        Boolean liberado,
 
 
-    @NotNull
-    String caminho,
+        @NotNull
+        TipoAcesso tipoAcesso,
+        @Pattern(regexp = "^\\d{3}-\\d{4}$", message = "Formato do ramal inválido. Deve estar no formato 000-0000")
+        String ramal,
 
-    @NotBlank
-    @NotNull
-    String antiguidade
-    ) {
+
+        @NotNull
+        String caminho,
+
+        @NotBlank
+        @NotNull
+        String antiguidade
+) {
 
 }

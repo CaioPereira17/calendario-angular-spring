@@ -15,65 +15,73 @@ import br.mil.eb.decex.calendario_spring.repository.AssessoriaRepository;
 import br.mil.eb.decex.calendario_spring.repository.PessoaRepository;
 import br.mil.eb.decex.calendario_spring.repository.PessoaTIInfoRepository;
 import br.mil.eb.decex.calendario_spring.repository.UsuarioRepository;
+import org.springframework.data.domain.Pageable;
 
 @SpringBootApplication
 public class CalendarioSpringApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CalendarioSpringApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(CalendarioSpringApplication.class, args);
+    }
 
-	@Bean
-	CommandLineRunner initDatabase(
-		PessoaRepository pessoaRepository, 
-		AssessoriaRepository assessoriaRepository, 
-		UsuarioRepository usuarioRepository,
-		PessoaTIInfoRepository pessoaTIInfoRepository) {  // Adicionando PessoaTIInfoRepository
-		
-		return args -> {
-			//pessoaRepository.deleteAll();  // Limpa a tabela `pessoa`
-			//pessoaTIInfoRepository.deleteAll(); // Limpa a tabela `pessoa_ti_info` (evita duplicações)
+    @Bean
+    CommandLineRunner initDatabase(
+            PessoaRepository pessoaRepository,
+            AssessoriaRepository assessoriaRepository,
+            UsuarioRepository usuarioRepository,
+            PessoaTIInfoRepository pessoaTIInfoRepository) {
 
-			// Criação das Assessorias
-			Assessoria assessoria = new Assessoria();
-			assessoria.setDescricao("Divisão de Tecnologia da Informação");
-			assessoria.setSigla("DTI");
-			assessoriaRepository.save(assessoria);
+        return args -> {
+            // Exemplo de verificação antes de criar assessoria
 
-			// Criação de Pessoas
-			Pessoa pessoa = new Pessoa();
-			pessoa.setIdentidade("019.562.303-8");
-			pessoa.setNome("Vanilton Gomes dos Santos");
-			pessoa.setNomeGuerra("Vanilton");
-			pessoa.setTipoAcesso(TipoAcesso.ADMINISTRADOR);
-			pessoa.setPostoGraduacao(PostoGraduacao.SEG_SARGENTO);
-			pessoa.setLiberado(true);
-			pessoa.setAntiguidade("1");
-			pessoa.setAssessoria(assessoria);
-			pessoa.setRamal("810 - 5678");
-			pessoa.setCaminho("http://localhost:8080/media/0195623038.jpg");
+            //Criação das Assessorias
+            Assessoria assessoria = new Assessoria();
+            assessoria.setDescricao("Divisão de Tecnologia da Informação");
+            assessoria.setSigla("DTI");
+            assessoriaRepository.save(assessoria);
 
-			// Salva a pessoa no banco
-			Pessoa pessoaSalva = pessoaRepository.save(pessoa);
 
-			// Criar informações de TI para essa pessoa
-			PessoaTIInfo tiInfo = new PessoaTIInfo();
-			tiInfo.setPessoa(pessoaSalva);
-			tiInfo.setControleAcessoId("12345");
-			tiInfo.setContaAd("user.ad");
-			tiInfo.setContaSiscau("siscau-user");
-			tiInfo.setContaSped("sped-user");
+            // Exemplo de verificação antes de criar Pessoa
+            Pessoa pessoa = pessoaRepository.findByIdentidade("019562303-8")
+                    .orElseGet(() -> {
+                        Pessoa novaPessoa = new Pessoa();
+                        novaPessoa.setIdentidade("019562303-8");
+                        novaPessoa.setNome("Vanilton Gomes dos Santos");
+                        novaPessoa.setNomeGuerra("Vanilton");
+                        novaPessoa.setTipoAcesso(TipoAcesso.ADMINISTRADOR);
+                        novaPessoa.setPostoGraduacao(PostoGraduacao.SEG_SARGENTO);
+                        novaPessoa.setArmaquadroservico("Comunicações");
+                        novaPessoa.setLiberado(true);
+                        novaPessoa.setAntiguidade("1");
+                        novaPessoa.setAssessoria(assessoria);
+                        novaPessoa.setRamal("810-5678");
+                        novaPessoa.setCaminho("http://localhost:8080/media/0195623038.jpg");
 
-			// Salva as informações de TI no banco
-			pessoaTIInfoRepository.save(tiInfo);
+                        return pessoaRepository.save(novaPessoa);
+                    });
 
-			// Criação de Usuário
-			Usuario usuario = new Usuario();
-			usuario.setUsername("0195623038");
-			usuario.setPassword("$2a$12$GkgWGrA1LQ27BPo235vAJ.CfFAHt4uUATsX7xQG.mDVjj3gI02NUm");
-			usuario.setRole("ADMINISTRADOR");
-			usuario.setLiberado(true);
-			usuarioRepository.save(usuario);
-		};
-	}
+            // Criar informações de TI apenas se não existirem
+            if (!pessoaTIInfoRepository.existsByPessoa(pessoa)) {
+                PessoaTIInfo tiInfo = new PessoaTIInfo();
+                tiInfo.setPessoa(pessoa);
+                tiInfo.setControleAcessoId("12345");
+                tiInfo.setContaAd("user.ad");
+                tiInfo.setContaSiscau("siscau-user");
+                tiInfo.setContaSped("sped-user");
+                pessoaTIInfoRepository.save(tiInfo);
+            }
+
+            // Verificação antes de criar Usuario
+            usuarioRepository.findByUsername("0195623038")
+                    .orElseGet(() -> {
+                        Usuario usuario = new Usuario();
+                        usuario.setUsername("0195623038");
+                        usuario.setPassword("$2a$12$GkgWGrA1LQ27BPo235vAJ.CfFAHt4uUATsX7xQG.mDVjj3gI02NUm");
+                        usuario.setRole("ADMINISTRADOR");
+                        usuario.setLiberado(true);
+                        return usuarioRepository.save(usuario);
+                    });
+        };
+    }
+
 }

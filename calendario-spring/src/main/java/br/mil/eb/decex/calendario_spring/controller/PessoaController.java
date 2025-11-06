@@ -91,6 +91,9 @@ public class PessoaController {
         return pessoaService.search(termo, page, pageSize);
     }
 
+
+
+
     @GetMapping("/inativas")
     public PessoaPageDTO listarPessoasInativas(
             @RequestParam(defaultValue = "0") @PositiveOrZero int page,

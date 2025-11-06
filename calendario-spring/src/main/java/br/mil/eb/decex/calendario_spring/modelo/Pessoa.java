@@ -42,7 +42,7 @@ public class Pessoa implements Serializable {
 	private Long id;
 
 	@NotNull
-	@Pattern(regexp = "^\\d{3}\\.\\d{3}\\.\\d{3}-\\d$", message = "Formato de identidade inválido. Deve estar no formato 000.000.000-0.")
+    @Pattern(regexp = "^\\d{9}-\\d{1}$", message = "Formato da identidade inválido. Deve estar no formato 000000000-0")
 	@Column(unique = true)
 	private String identidade;
 
@@ -97,7 +97,7 @@ public class Pessoa implements Serializable {
 	private TipoAcesso tipoAcesso;
 
 	@NotNull
-	@Pattern(regexp = "^810 - \\d{4}$", message = "Formato do ramal inválido. Deve estar no formato 000 - 0000")
+    @Pattern(regexp = "^\\d{3}-\\d{4}$", message = "Formato do ramal inválido. Deve estar no formato 000-0000")
 	@Column
 	private String ramal;
 
