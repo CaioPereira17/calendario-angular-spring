@@ -16,44 +16,51 @@ public record PessoaDTO(
 
     @NotBlank
     @NotNull
-    @Pattern(regexp = "^\\d{3}\\.\\d{3}\\.\\d{3}-\\d$", message = "Formato de identidade inválido. Deve estar no formato 000.000.000-0.")                        
+    @Pattern(regexp = "^\\d{3}\\.\\d{3}\\.\\d{3}-\\d$", message = "Formato de identidade inválido. Deve estar no formato 000.000.000-0.")
     String identidade,
 
     Users users,
-    
+
     @NotBlank
     @NotNull
     String nome,
-    
+
     @NotBlank
     @NotNull
     String nomeGuerra,
 
-    
+
     @NotNull
     PostoGraduacao postoGraduacao,
-    
-    
+
+     //
+     // NOVO CAMPO ADICIONADO AQUI
+     //
+     @NotBlank // (Equivalente ao Validators.required)
+     @NotNull  // (Equivalente ao Validators.required)
+     String armaquadroservico,
+
+
     @NotNull
     Assessoria assessoria,
-    
-    
-    @NotNull
-    Boolean liberado, 
-    
-    
-    @NotNull
-    TipoAcesso tipoAcesso, 
-    @Pattern(regexp = "^810 - \\d{4}$", message = "Formato do ramal inválido. Deve estar no formato 000 - 0000") 
-    String ramal, 
 
-    
+
+    @NotNull
+    Boolean liberado,
+
+
+    @NotNull
+    TipoAcesso tipoAcesso,
+    @Pattern(regexp = "^810 - \\d{4}$", message = "Formato do ramal inválido. Deve estar no formato 000 - 0000")
+    String ramal,
+
+
     @NotNull
     String caminho,
 
     @NotBlank
     @NotNull
-    String antiguidade  
+    String antiguidade
     ) {
 
 }

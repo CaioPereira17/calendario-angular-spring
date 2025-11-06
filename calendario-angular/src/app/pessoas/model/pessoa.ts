@@ -15,6 +15,8 @@ export interface Pessoa {
 	nomeGuerra: string;
 
 	postoGraduacao: string;
+    //caio adição
+	armaquadroservico?: string;
 
 	antiguidade: number;
 

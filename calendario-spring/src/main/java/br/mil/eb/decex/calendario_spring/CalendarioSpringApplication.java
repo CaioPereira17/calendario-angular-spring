@@ -31,8 +31,8 @@ public class CalendarioSpringApplication {
 		PessoaTIInfoRepository pessoaTIInfoRepository) {  // Adicionando PessoaTIInfoRepository
 		
 		return args -> {
-			pessoaRepository.deleteAll();  // Limpa a tabela `pessoa`
-			pessoaTIInfoRepository.deleteAll(); // Limpa a tabela `pessoa_ti_info` (evita duplicações)
+			//pessoaRepository.deleteAll();  // Limpa a tabela `pessoa`
+			//pessoaTIInfoRepository.deleteAll(); // Limpa a tabela `pessoa_ti_info` (evita duplicações)
 
 			// Criação das Assessorias
 			Assessoria assessoria = new Assessoria();

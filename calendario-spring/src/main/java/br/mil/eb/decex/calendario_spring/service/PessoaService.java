@@ -131,6 +131,7 @@ public class PessoaService {
                 pessoaDTO.nome(),
                 pessoaDTO.nomeGuerra(),
                 pessoaDTO.postoGraduacao(),
+                pessoaDTO.armaquadroservico(),
                 pessoaDTO.assessoria(),
                 pessoaDTO.liberado(),
                 pessoaDTO.tipoAcesso(),
@@ -166,7 +167,10 @@ public class PessoaService {
                 recordFound.setLiberado(pessoa.liberado());
                 recordFound.setRamal(pessoa.ramal());
                 recordFound.setTipoAcesso(pessoa.tipoAcesso());
-    
+                recordFound.setArmaquadroservico(pessoa.armaquadroservico());
+
+
+
                 return pessoaMapper.toDTO(pessoaRepository.save(recordFound));
             }).orElseThrow(() -> new RecordNotFoundException(id));
     }

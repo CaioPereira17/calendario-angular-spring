@@ -65,6 +65,19 @@ public class Pessoa implements Serializable {
 	private PostoGraduacao postoGraduacao;
 
 	private int postoGraduacaoOrdinal;
+    //Caio adição
+    @Column(name = "armaquadroservico") // O nome exato da coluna no banco
+    private String armaquadroservico;
+
+    public String getArmaquadroservico() {
+        return armaquadroservico;
+    }
+
+    public void setArmaquadroservico(String armaquadroservico) {
+        this.armaquadroservico = armaquadroservico;
+    }
+
+
 
 	@NotNull
 	@ManyToOne
@@ -258,6 +271,8 @@ public class Pessoa implements Serializable {
 	public void setAntiguidade(String antiguidade) {
 		this.antiguidade = antiguidade;
 	}
+
+
 
 	@PrePersist
 	@PreUpdate

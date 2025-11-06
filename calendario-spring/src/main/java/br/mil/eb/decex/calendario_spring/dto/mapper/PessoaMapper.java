@@ -14,8 +14,8 @@ public class PessoaMapper {
             return null;
         }
 
-        return new PessoaDTO(pessoa.getId(), pessoa.getIdentidade(), pessoa.getUsers(), 
-                             pessoa.getNome(), pessoa.getNomeGuerra(), pessoa.getPostoGraduacao(), 
+        return new PessoaDTO(pessoa.getId(), pessoa.getIdentidade(), pessoa.getUsers(),
+                             pessoa.getNome(), pessoa.getNomeGuerra(), pessoa.getPostoGraduacao(), pessoa.getArmaquadroservico(),
                              pessoa.getAssessoria(), pessoa.getLiberado(), pessoa.getTipoAcesso(), 
                              pessoa.getRamal(), pessoa.getCaminho(), pessoa.getAntiguidade() );
     }
@@ -36,6 +36,7 @@ public class PessoaMapper {
         pessoa.setNome(pessoaDTO.nome());
         pessoa.setNomeGuerra(pessoaDTO.nomeGuerra());
         pessoa.setPostoGraduacao(pessoaDTO.postoGraduacao());
+        pessoa.setArmaquadroservico(pessoaDTO.armaquadroservico());
         pessoa.setAssessoria(pessoaDTO.assessoria());
         pessoa.setLiberado(pessoaDTO.liberado());
         pessoa.setTipoAcesso(pessoaDTO.tipoAcesso());
