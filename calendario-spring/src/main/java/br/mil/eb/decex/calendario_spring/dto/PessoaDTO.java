@@ -16,7 +16,10 @@ public record PessoaDTO(
 
         @NotBlank
         @NotNull
-        @Pattern(regexp = "^\\d{9}-\\d{1}$", message = "Formato da identidade inválido. Deve estar no formato 000000000-0")
+//        @Pattern(regexp = "^\\d{9}-\\d{1}$", message = "Formato da identidade inválido. Deve estar no formato 000000000-0")
+//        String identidade,
+        // SUBSTITUA O PATTERN ATUAL POR ESTE: Caio
+        @Pattern(regexp = "^(\\d{9}-\\d{1}|\\d{3}\\.\\d{3}\\.\\d{3}-\\d)$", message = "Formato de identidade inválido. Use 000.000.000-0 ou 000000000-0")
         String identidade,
 
         Users users,
@@ -51,7 +54,10 @@ public record PessoaDTO(
 
         @NotNull
         TipoAcesso tipoAcesso,
-        @Pattern(regexp = "^\\d{3}-\\d{4}$", message = "Formato do ramal inválido. Deve estar no formato 000-0000")
+//        @Pattern(regexp = "^\\d{3}-\\d{4}$", message = "Formato do ramal inválido. Deve estar no formato 000-0000")
+//        String ramal,
+        // Substitua o @Pattern atual por este:
+        @Pattern(regexp = "^810 - \\d{4}$", message = "Formato do ramal inválido. Deve estar no formato 810 - 0000")
         String ramal,
 
 
