@@ -16,7 +16,7 @@ export class PessoaResolver  {
     if (route.params && route.params['id']) {
       return this.service.loadById(route.params['id']);
     }
-    return of({_id:'' , identidade:'', users:'', tipoAcesso:'', nome:'', nomeGuerra:'', postoGraduacao:'', assessoria:{_id:'', sigla:'', descricao:'', assessoriaPai:null, ordem:0, interna:false} , liberado:'', ramal:'', caminho:'', antiguidade:0});
+    return of({_id:'' , identidade:'', users:'', tipoAcesso:'', nome:'', nomeGuerra:'', postoGraduacao:'', assessoria:{_id:'', sigla:'', descricao:'', assessoriaPai:null, ordem:0, interna:false} , liberado:'', ramal:'', caminho:'', dataUltimaPromocao:'25/11/2025'});
   }
 
 

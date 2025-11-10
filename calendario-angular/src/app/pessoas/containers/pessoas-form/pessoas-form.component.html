@@ -82,10 +82,10 @@
           }
 
           <mat-form-field class="full-width">
-            <mat-label>Antiguidade</mat-label>
-            <input matInput placeholder="Antiguidade" formControlName="antiguidade">
-            @if (form.get('antiguidade')?.invalid) {
-            <mat-error>{{errorMessage("antiguidade")}}</mat-error>
+            <mat-label>Data da última promoção</mat-label>
+            <input matInput placeholder="Data da Última Promoção" formControlName="dataUltimaPromocao">
+            @if (form.get('dataultimapromo')?.invalid) {
+            <mat-error>{{errorMessage("dataultimapromo")}}</mat-error>
             }
           </mat-form-field>
 

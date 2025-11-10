@@ -18,7 +18,7 @@ export interface Pessoa {
     //caio adição
 	armaquadroservico?: string;
 
-	antiguidade: number;
+	dataUltimaPromocao: string;
 
 	assessoria: Assessoria;
 

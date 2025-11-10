@@ -110,7 +110,7 @@ export class PessoasFormComponent implements OnInit {
         nome: ['', Validators.required],
         postoGraduacao: ['', Validators.required],
         armaquadroservico: ['', Validators.required],
-        antiguidade:[''],
+        dataUltimaPromocao:[''],
         tipoAcesso: ['', Validators.required],
         assessoria: [null, Validators.required],
         assessoriaFilha:[null],
@@ -147,7 +147,7 @@ export class PessoasFormComponent implements OnInit {
       nomeGuerra: pessoa.nomeGuerra || '',
       postoGraduacao: pessoa.postoGraduacao || '',
       armaquadroservico: pessoa.armaquadroservico || '', // <-- CORRETO (funcional)
-      antiguidade: pessoa.antiguidade || '',
+      dataUltimaPromocao: pessoa.dataUltimaPromocao || '',
       tipoAcesso: pessoa.tipoAcesso || '',
       assessoria: pessoa.assessoria || null,
       assessoriaFilha: pessoa.assessoria || null,

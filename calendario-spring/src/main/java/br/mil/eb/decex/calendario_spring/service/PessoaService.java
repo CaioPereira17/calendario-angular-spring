@@ -39,40 +39,39 @@ public class PessoaService {
 
     public Pessoa salvarPessoaComTIInfo(Pessoa pessoa, PessoaTIInfo tiInfo) {
         pessoa = pessoaRepository.save(pessoa);
-        
+
         if (tiInfo != null) {
             tiInfo.setPessoa(pessoa);
             pessoaTIInfoRepository.save(tiInfo);
         }
-        
+
         return pessoa;
     }
 
     public PessoaTIInfo atualizarTIInfo(Long pessoaId, PessoaTIInfo novasInfos) {
         // Busca a pessoa existente SEM criar uma nova
         Pessoa pessoa = pessoaRepository.findById(pessoaId)
-            .orElseThrow(() -> new RuntimeException("Pessoa não encontrada"));
-    
+                .orElseThrow(() -> new RuntimeException("Pessoa não encontrada"));
+
         // Busca informações de TI, se existirem
         PessoaTIInfo tiInfo = pessoaTIInfoRepository.findByPessoaId(pessoaId);
-    
+
         if (tiInfo == null) {
             // Se não existir, cria um novo registro de TI SEM criar nova pessoa
             tiInfo = new PessoaTIInfo();
             tiInfo.setPessoa(pessoa);
         }
-    
+
         // Atualiza os dados da tabela pessoa_ti_info
         tiInfo.setControleAcessoId(novasInfos.getControleAcessoId());
         tiInfo.setContaAd(novasInfos.getContaAd());
         tiInfo.setContaSiscau(novasInfos.getContaSiscau());
         tiInfo.setContaSped(novasInfos.getContaSped());
-    
+
         return pessoaTIInfoRepository.save(tiInfo); // Apenas salva as informações de TI
     }
-    
 
-    public PessoaService(PessoaRepository pessoaRepository, PessoaMapper pessoaMapper ) {
+    public PessoaService(PessoaRepository pessoaRepository, PessoaMapper pessoaMapper) {
         this.pessoaRepository = pessoaRepository;
         this.pessoaMapper = pessoaMapper;
     }
@@ -84,27 +83,25 @@ public class PessoaService {
     public PessoaPageDTO listarInativas(int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<Pessoa> pagePessoa = pessoaRepository.findInativas(pageable);
-    
+
         List<PessoaDTO> pessoasDTO = pagePessoa.stream()
-            .map(pessoaMapper::toDTO)
-            .collect(Collectors.toList());
-    
+                .map(pessoaMapper::toDTO)
+                .collect(Collectors.toList());
+
         return new PessoaPageDTO(pessoasDTO, pagePessoa.getTotalElements(), pagePessoa.getTotalPages());
     }
-    
-
 
     private String verificarCaminhoImagem(String caminho) {
         // Substitua "D:\\Programação\\2024\\calendario-angular-spring\\calendario-spring\\images\\"
         // pelo caminho absoluto da pasta onde as imagens estão armazenadas
         String basePath = "images/";
-        
+
         // Extrai o nome do arquivo da URL (assumindo que o caminho é algo como http://localhost:8080/media/0195623038.jpg)
         String nomeArquivo = caminho.substring(caminho.lastIndexOf("/") + 1);
-        
+
         // Constrói o caminho absoluto do arquivo de imagem
         Path caminhoImagem = Paths.get(basePath + nomeArquivo);
-        
+
         // Verifica se o arquivo existe no caminho especificado
         if (Files.exists(caminhoImagem)) {
             return caminho; // Retorna o caminho original se o arquivo existir
@@ -125,28 +122,27 @@ public class PessoaService {
             PessoaDTO pessoaDTO = pessoaMapper.toDTO(pessoa);
             String caminhoAtualizado = verificarCaminhoImagem(pessoaDTO.caminho());
             return new PessoaDTO(
-                pessoaDTO.id(),
-                pessoaDTO.identidade(),
-                pessoaDTO.users(),
-                pessoaDTO.nome(),
-                pessoaDTO.nomeGuerra(),
-                pessoaDTO.postoGraduacao(),
-                pessoaDTO.armaquadroservico(),
-                pessoaDTO.assessoria(),
-                pessoaDTO.liberado(),
-                pessoaDTO.tipoAcesso(),
-                pessoaDTO.ramal(),
-                caminhoAtualizado,
-                pessoaDTO.antiguidade()
+                    pessoaDTO.id(),
+                    pessoaDTO.identidade(),
+                    pessoaDTO.users(),
+                    pessoaDTO.nome(),
+                    pessoaDTO.nomeGuerra(),
+                    pessoaDTO.postoGraduacao(),
+                    pessoaDTO.armaquadroservico(),
+                    pessoaDTO.assessoria(),
+                    pessoaDTO.liberado(),
+                    pessoaDTO.tipoAcesso(),
+                    pessoaDTO.ramal(),
+                    caminhoAtualizado,
+                    pessoaDTO.dataUltimaPromocao()
             );
         }).collect(Collectors.toList());
         return new PessoaPageDTO(pessoas, pagePessoa.getTotalElements(), pagePessoa.getTotalPages());
     }
 
-  
-        public PessoaDTO findById(@NotNull @Positive Long id){
+    public PessoaDTO findById(@NotNull @Positive Long id) {
         return pessoaRepository.findById(id).map(pessoaMapper::toDTO)
-                .orElseThrow(() ->  new RecordNotFoundException(id));   
+                .orElseThrow(() -> new RecordNotFoundException(id));
 
     }
 
@@ -156,32 +152,28 @@ public class PessoaService {
 
     public PessoaDTO update(@NotNull @Positive Long id, @Valid PessoaDTO pessoa) {
         return pessoaRepository.findById(id)
-            .map(recordFound -> {
-                // Atualiza apenas os campos necessários, sem criar uma nova pessoa
-                recordFound.setNome(pessoa.nome());
-                recordFound.setNomeGuerra(pessoa.nomeGuerra());
-                recordFound.setPostoGraduacao(pessoa.postoGraduacao());
-                recordFound.setAntiguidade(pessoa.antiguidade());
-                recordFound.setAssessoria(pessoa.assessoria());
-                recordFound.setCaminho(pessoa.caminho());
-                recordFound.setLiberado(pessoa.liberado());
-                recordFound.setRamal(pessoa.ramal());
-                recordFound.setTipoAcesso(pessoa.tipoAcesso());
-                recordFound.setArmaquadroservico(pessoa.armaquadroservico());
+                .map(recordFound -> {
+                    // Atualiza apenas os campos necessários, sem criar uma nova pessoa
+                    recordFound.setNome(pessoa.nome());
+                    recordFound.setNomeGuerra(pessoa.nomeGuerra());
+                    recordFound.setPostoGraduacao(pessoa.postoGraduacao());
+                    recordFound.setDataUltimaPromocao(pessoa.dataUltimaPromocao());
+                    recordFound.setAssessoria(pessoa.assessoria());
+                    recordFound.setCaminho(pessoa.caminho());
+                    recordFound.setLiberado(pessoa.liberado());
+                    recordFound.setRamal(pessoa.ramal());
+                    recordFound.setTipoAcesso(pessoa.tipoAcesso());
+                    recordFound.setArmaquadroservico(pessoa.armaquadroservico());
 
-
-
-                return pessoaMapper.toDTO(pessoaRepository.save(recordFound));
-            }).orElseThrow(() -> new RecordNotFoundException(id));
+                    return pessoaMapper.toDTO(pessoaRepository.save(recordFound));
+                }).orElseThrow(() -> new RecordNotFoundException(id));
     }
-    
-    
 
     public void delete(@NotNull @Positive Long id) {
 
         pessoaRepository.delete(pessoaRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException(id)));
-        
+
     }
 
 }

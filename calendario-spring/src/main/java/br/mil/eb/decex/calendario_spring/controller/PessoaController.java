@@ -115,18 +115,41 @@ public class PessoaController {
         return ResponseEntity.ok(PostoGraduacao.values());
     }
 
+//    @PostMapping
+//    @ResponseStatus(code = HttpStatus.CREATED)
+//    public PessoaDTO create(@RequestBody @Valid PessoaDTO pessoa) {
+//        System.out.println("CHEGOU AUQI");
+//        return pessoaService.create(pessoa);
+//    }
+//
+//    @PutMapping("/{id}")
+//    public PessoaDTO update(@PathVariable @NotNull @Positive Long id,
+//                @RequestBody @Valid @NotNull PessoaDTO pessoa) {
+//        return pessoaService.update(id, pessoa);
+//
+//    }
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public PessoaDTO create(@RequestBody @Valid PessoaDTO pessoa) {       
-        return pessoaService.create(pessoa);
+    public PessoaDTO create(@RequestBody @Valid PessoaDTO pessoaDTO) {
+        // 1️⃣ Log do DTO recebido
+        System.out.println("---- CREATE Pessoa ----");
+        System.out.println("Recebido DTO.dataUltimaPromocao = " + pessoaDTO.dataUltimaPromocao());
+
+        // 2️⃣ Converte para entidade
+        Pessoa pessoa = pessoaMapper.toEntity(pessoaDTO);
+        System.out.println("Mapper -> Pessoa.dataUltimaPromocao = " + pessoa.getDataUltimaPromocao());
+
+        // 3️⃣ Salva no banco
+        Pessoa pessoaSalva = pessoaRepository.saveAndFlush(pessoa);
+        System.out.println("Após saveAndFlush: Pessoa.dataUltimaPromocao = " + pessoaSalva.getDataUltimaPromocao());
+
+        // 4️⃣ Retorna DTO
+        PessoaDTO dtoSalvo = pessoaMapper.toDTO(pessoaSalva);
+        System.out.println("DTO retornado: dataUltimaPromocao = " + dtoSalvo.dataUltimaPromocao());
+
+        return dtoSalvo;
     }
 
-    @PutMapping("/{id}")
-    public PessoaDTO update(@PathVariable @NotNull @Positive Long id, 
-                @RequestBody @Valid @NotNull PessoaDTO pessoa) {
-        return pessoaService.update(id, pessoa);
-                                    
-    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)

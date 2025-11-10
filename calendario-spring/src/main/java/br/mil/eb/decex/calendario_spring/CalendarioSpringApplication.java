@@ -17,6 +17,10 @@ import br.mil.eb.decex.calendario_spring.repository.PessoaTIInfoRepository;
 import br.mil.eb.decex.calendario_spring.repository.UsuarioRepository;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
 @SpringBootApplication
 public class CalendarioSpringApplication {
 
@@ -40,7 +44,6 @@ public class CalendarioSpringApplication {
             assessoria.setSigla("DTI");
             assessoriaRepository.save(assessoria);
 
-
             // Exemplo de verificação antes de criar Pessoa
             Pessoa pessoa = pessoaRepository.findByIdentidade("019562303-8")
                     .orElseGet(() -> {
@@ -52,7 +55,10 @@ public class CalendarioSpringApplication {
                         novaPessoa.setPostoGraduacao(PostoGraduacao.SEG_SARGENTO);
                         novaPessoa.setArmaquadroservico("Comunicações");
                         novaPessoa.setLiberado(true);
-                        novaPessoa.setAntiguidade("1");
+
+                        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                        novaPessoa.setDataUltimaPromocao(LocalDate.parse("25/11/2025", formato));
+
                         novaPessoa.setAssessoria(assessoria);
                         novaPessoa.setRamal("810-5678");
                         novaPessoa.setCaminho("http://localhost:8080/media/0195623038.jpg");
