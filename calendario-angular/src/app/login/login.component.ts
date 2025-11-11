@@ -68,11 +68,43 @@ export class LoginComponent implements OnInit {
 
   });
 
-  logar(): void {
+  // logar(): void {
+  //   this.loginService.logar(this.login).subscribe({
+  //     next: token => {
+  //       if (token) {
+  //         // Adiciona o token ao armazenamento local ou sessão
+  //         this.loginService.addToken(token);
+
+  //         // Redireciona baseado no sistema selecionado
+  //         if (this.siglaSistema === 'SISGEPESS' || this.siglaSistema === 'ADMINISTRADOR') {
+  //           this.router.navigate(['/pessoas']);
+  //         } else if (this.siglaSistema === 'SISAGENDA') {
+  //           this.router.navigate(['/auditorios/new']);
+  //         }
+  //       } else {
+  //         alert('Usuário ou senha inválidos');
+  //       }
+  //     },
+  //     error: () => {
+  //       alert('Usuário ou senha inválidos');
+  //     }
+  //   });
+  // }
+  //Caio correção login
+logar(): void {
+    
+    // PASSO 1: Verificamos se a função foi chamada e quais dados ela está enviando
+    console.log('1. Tentando logar com:', this.login);
+
     this.loginService.logar(this.login).subscribe({
+      
       next: token => {
+        // PASSO 2: Vemos o que o backend retornou
+        console.log('2. Resposta do backend recebida. Token:', token);
+
         if (token) {
-          // Adiciona o token ao armazenamento local ou sessão
+          // PASSO 3 (Sucesso): Se o token existir, entramos aqui
+          console.log('3. Login OK. Salvando token e redirecionando...');
           this.loginService.addToken(token);
 
           // Redireciona baseado no sistema selecionado
@@ -82,15 +114,18 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['/auditorios/new']);
           }
         } else {
-          alert('Usuário ou senha inválidos');
+          // PASSO 3 (Falha): O backend respondeu, mas o token é nulo
+          console.log('3. Falha no login. O backend retornou um token nulo.');
+          alert('Usuário ou senha inválidos (Token nulo)');
         }
       },
-      error: () => {
-        alert('Usuário ou senha inválidos');
+      error: (err) => { // Adicionamos 'err' para ver o erro
+        // PASSO 2 (Falha): A chamada à API falhou (401, 404, 500, CORS, etc)
+        console.error('2. ERRO na chamada de login:', err);
+        alert('Usuário ou senha inválidos (Erro na API)');
       }
     });
   }
-
 
   // logar(): void {
   //   // Autenticação simulada

@@ -85,7 +85,7 @@ export class PessoasService {
   save(record: Partial<Pessoa>) {
     //console.log(record);
     if (record._id) {
-     // console.log('update');
+      console.log('update', record);
       return this.update(record);
     }
    // console.log('create');

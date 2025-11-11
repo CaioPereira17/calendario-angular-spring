@@ -26,11 +26,16 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort; // (Você já deve ter)
+
 
 @Validated
 @Service
 public class PessoaService {
-
+    // ADICIONE ESTA LINHA:
+    private static final Logger logger = LoggerFactory.getLogger(PessoaService.class);
     private final PessoaRepository pessoaRepository;
     private final PessoaMapper pessoaMapper;
 
@@ -111,13 +116,18 @@ public class PessoaService {
     }
 
     public List<PessoaDTO> list() {
+
+
+
         return pessoaRepository.findAll().stream().map(pessoaMapper::toDTO)
                 .collect(Collectors.toList());
 
     }
 
+    //caio adição para ordenação asc na dat
+    //Responsável pela organização das informações na lista de pessoas = Lista de Ramais 🥷 ASS Cb Caio quase DEV e Ten Ramos Javeiro
     public PessoaPageDTO search(String termo, @PositiveOrZero int page, @Positive @Max(100) int pageSize) {
-        Page<Pessoa> pagePessoa = pessoaRepository.findByNomeGuerraOrAssessoriaAndLiberadoTrue(termo, PageRequest.of(page, pageSize));
+        Page<Pessoa> pagePessoa = pessoaRepository.findByNomeGuerraOrAssessoriaAndLiberadoTrue(termo, PageRequest.of(page, pageSize, Sort.by(Sort.Direction.ASC, "dataUltimaPromocao")));
         List<PessoaDTO> pessoas = pagePessoa.get().map(pessoa -> {
             PessoaDTO pessoaDTO = pessoaMapper.toDTO(pessoa);
             String caminhoAtualizado = verificarCaminhoImagem(pessoaDTO.caminho());
@@ -175,5 +185,6 @@ public class PessoaService {
                 .orElseThrow(() -> new RecordNotFoundException(id)));
 
     }
+
 
 }

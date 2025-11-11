@@ -73,8 +73,6 @@ public class PessoaController {
 }
 
 
-    
-
     @GetMapping
     public List <PessoaDTO> list() {
         return pessoaService.list();
@@ -118,16 +116,16 @@ public class PessoaController {
 //    @PostMapping
 //    @ResponseStatus(code = HttpStatus.CREATED)
 //    public PessoaDTO create(@RequestBody @Valid PessoaDTO pessoa) {
-//        System.out.println("CHEGOU AUQI");
+//        System.out.println("CHEGOU AQUI");
 //        return pessoaService.create(pessoa);
 //    }
 //
-//    @PutMapping("/{id}")
-//    public PessoaDTO update(@PathVariable @NotNull @Positive Long id,
-//                @RequestBody @Valid @NotNull PessoaDTO pessoa) {
-//        return pessoaService.update(id, pessoa);
-//
-//    }
+    @PutMapping("/{id}")
+    public PessoaDTO update(@PathVariable @NotNull @Positive Long id,
+                @RequestBody @Valid @NotNull PessoaDTO pessoa) {
+        return pessoaService.update(id, pessoa);
+
+    }
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public PessoaDTO create(@RequestBody @Valid PessoaDTO pessoaDTO) {
