@@ -47,8 +47,10 @@
         (delete)="onRemove($event)"
       ></app-agendamentos-lista>
 
+      <!-- aumentar itens por paginas -->
       <mat-paginator
-        [pageSizeOptions]="[5, 10, 15]"
+      
+        [pageSizeOptions]="[5, 10, 25]"
         showFirstLastButtons
         [pageIndex]="pageIndex"
         [pageSize]="pageSize"

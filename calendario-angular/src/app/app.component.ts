@@ -161,7 +161,7 @@ export class AppComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.loginService.logout();
-        this.router.navigate(['/login']); // Navegação mais limpa que o reload
+        this.router.navigate(['/']); // Navegação mais limpa que o reload
       }
     });
   }

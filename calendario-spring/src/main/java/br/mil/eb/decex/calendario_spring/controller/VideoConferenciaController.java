@@ -47,6 +47,7 @@ public class VideoConferenciaController {
         return videoConferenciaService.list();
     }
 
+
      @GetMapping("/search")
     public VideoConferenciaPageDTO search(String termo, @RequestParam(defaultValue = "0") @PositiveOrZero int page,
             @RequestParam(defaultValue = "10") @Positive @Max(100) int pageSize

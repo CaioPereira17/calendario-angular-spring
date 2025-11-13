@@ -60,7 +60,7 @@ public class CalendarioSpringApplication {
                         novaPessoa.setDataUltimaPromocao(LocalDate.parse("25/11/2025", formato));
 
                         novaPessoa.setAssessoria(assessoria);
-                        novaPessoa.setRamal("810-5678");
+                        novaPessoa.setRamal("8105678");
                         novaPessoa.setCaminho("http://localhost:8080/media/0195623038.jpg");
 
                         return pessoaRepository.save(novaPessoa);

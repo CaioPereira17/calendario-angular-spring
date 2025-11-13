@@ -44,7 +44,8 @@ public class SecurityConfig  {
 				.requestMatchers("/api/auditorios/**").permitAll() // Permitir acesso público a tela de auditorios
 				.requestMatchers("/api/pessoas/**").permitAll() // Permitir acesso público a lista de pessoas
 				.requestMatchers("/api/assessorias/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/videoConferencias/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/videoConferencias/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/videoConferencias/**").authenticated()
 				// .requestMatchers("/api/{id}/confirmar").permitAll() // Permitir acesso público a lista de pessoas
 				// .requestMatchers("/api/pessoas/inativas/**").permitAll() // Libera apenas para ADMIN
             	.requestMatchers("/api/pessoas/reativar/**").hasAuthority("ROLE_ADMINISTRADOR") // Libera o reativar para ADMIN

@@ -23,10 +23,10 @@ export class SelectSystemComponent implements OnInit {
     // Remove o token e define o estado de login como deslogado
     this.loginService.removerToken();
   }
-
+//http://localhost:4200/sisgepess/login
   navigateTo(system: string): void {
     if (system === 'sisgepess') {
-      this.router.navigate(['/pessoas']);
+      this.router.navigate(['/sisgepess/login']);
     } else if (system === 'sisagenda') {
       this.router.navigate(['/auditorios/new']);
     } else if (system === 'administrador') {

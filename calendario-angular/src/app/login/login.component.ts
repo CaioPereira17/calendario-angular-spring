@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     const systemType = this.route.snapshot.url[0]?.path; // Obtém a parte da URL
+    console.log(systemType)
     if (systemType === 'sisgepess') {
       this.siglaSistema = 'SISGEPESS';
       this.descricaoSistema = 'Sistema de Gestão de Pessoal';
@@ -91,7 +92,7 @@ export class LoginComponent implements OnInit {
   //   });
   // }
   //Caio correção login
-logar(): void {
+  logar(): void {
     
     // PASSO 1: Verificamos se a função foi chamada e quais dados ela está enviando
     console.log('1. Tentando logar com:', this.login);
@@ -103,12 +104,14 @@ logar(): void {
         console.log('2. Resposta do backend recebida. Token:', token);
 
         if (token) {
+          console.log(this.siglaSistema)
           // PASSO 3 (Sucesso): Se o token existir, entramos aqui
           console.log('3. Login OK. Salvando token e redirecionando...');
           this.loginService.addToken(token);
 
           // Redireciona baseado no sistema selecionado
           if (this.siglaSistema === 'SISGEPESS' || this.siglaSistema === 'ADMINISTRADOR') {
+            
             this.router.navigate(['/pessoas']);
           } else if (this.siglaSistema === 'SISAGENDA') {
             this.router.navigate(['/auditorios/new']);

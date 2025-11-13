@@ -50,9 +50,9 @@
         (edit)="onEdit($event)"
         (delete)="onRemove($event)"
       ></app-pessoas-lista>
-
+        <!-- Quantidade de pessoas por paginas -->
       <mat-paginator
-        [pageSizeOptions]="[5, 10, 15]"
+        [pageSizeOptions]="[5, 10, 25]"
         showFirstLastButtons
         [pageIndex]="pageIndex"
         [pageSize]="pageSize"
