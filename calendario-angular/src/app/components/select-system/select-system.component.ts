@@ -31,6 +31,10 @@ export class SelectSystemComponent implements OnInit {
       this.router.navigate(['/auditorios/new']);
     } else if (system === 'administrador') {
       this.router.navigate(['/administrador/login']);
+    } else if (system === 'pessoas'){
+      this.router.navigate(['/pessoas/']);
+    } else if (system === 'videocon'){
+      this.router.navigate(['/videoConferencias/new/']);
     }
   }
 

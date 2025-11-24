@@ -19,7 +19,8 @@
               @if (diaAtivo() && activeDayMeetings().length > 0) {
                 @for (meeting of activeDayMeetings(); track trackById($index, meeting)) {
                   <div>
-                    {{ meeting.horaInicio }} - {{ meeting.horaFim }} | Assessoria: {{ meeting.assessoria }}
+                    <!-- Ajuste para exibir a sigla da assessoria corretamente -->
+                    {{ meeting.horaInicio }} - {{ meeting.horaFim }} | Assessoria: {{ meeting.assessoria?.sigla }}
                   </div>
                 }
               }
@@ -46,7 +47,6 @@
         </div>
 
         <div class="calendar-weeks-grid">
-          <!-- Correção no loop para dias da semana -->
           @for (weekDay of diasDaSemana(); track weekDay; let i = $index) {
             <div>
               <div class="calendar-weeks-grid-cell">{{ weekDay }}</div>
@@ -57,27 +57,33 @@
         <div class="calendar-grid">
           <!-- Renderiza os dias do mês -->
           @for (dayOfMonth of daysOfMonth(); track dayOfMonth; let i = $index) {
+            <!-- Célula do Dia (GRID) -->
+            <!-- Removemos o mwlResizable daqui porque não redimensionamos o dia, apenas os eventos dentro dele -->
             <div
-              mwlResizable
-              (resizeEnd)="onResizeEnd($event, videoConferencia)"
               mwlDroppable
               (drop)="onDrop($event, dayOfMonth)"
               class="calendar-grid-cell"
-          [ngClass]="{
-            'calendar-grid-cell': true,
-            'calendar-grid-cell-active': diaAtivo()?.toISODate() === dayOfMonth.toISODate(),
-            'calendar-grid-cell-inactive': dayOfMonth.month !== primeiroDiaDoMesAtivo().month,
-            'calendar-grid-cell-today': dayOfMonth.toISODate() === hoje().toISODate()
-          }"
+              [ngClass]="{
+                'calendar-grid-cell': true,
+                'calendar-grid-cell-active': diaAtivo()?.toISODate() === dayOfMonth.toISODate(),
+                'calendar-grid-cell-inactive': dayOfMonth.month !== primeiroDiaDoMesAtivo().month,
+                'calendar-grid-cell-today': dayOfMonth.toISODate() === hoje().toISODate()
+              }"
               (click)="openVideoConferenciaModal(dayOfMonth)">
-              <!-- Contêiner para o número do dia -->
-              <div class="calendar-grid-cell-day-number"  (click)="openVideoConferenciaModal(dayOfMonth)">
+              
+              <!-- Número do dia -->
+              <div class="calendar-grid-cell-day-number">
                 {{ dayOfMonth.day }}
               </div>
+              
               <!-- Exibir videoConferencias para o dia -->
               @for (videoConferencia of getVideoConferenciasForDay(dayOfMonth); track videoConferencia) {
+                <!-- Célula do Evento (AGENDAMENTO) -->
+                <!-- O redimensionamento deve ficar AQUI, onde a variável 'videoConferencia' existe -->
                 <div
                   class="calendar-event"
+                  mwlResizable
+                  (resizeEnd)="onResizeEnd($event, videoConferencia)"
                   mwlDroppable
                   [dragOverClass]="'calendar-cell-over'"
                   (drop)="handleDrop($event, dayOfMonth)"
@@ -85,7 +91,7 @@
                   [dropData]="videoConferencia"
                   [dragAxis]="{x: true, y: true}"
                   (click)="openVideoConferenciaModal(dayOfMonth, videoConferencia); $event.stopPropagation()">
-                  {{ videoConferencia.horaInicio }} - {{ videoConferencia.horaFim }} | {{ videoConferencia.assessoria.sigla }}
+                  {{ videoConferencia.horaInicio }} - {{ videoConferencia.horaFim }} | {{ videoConferencia.assessoria?.sigla }}
                 </div>
               }
             </div>

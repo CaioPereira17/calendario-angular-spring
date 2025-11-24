@@ -115,10 +115,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
 
                 // --- CÓDIGO DE DEBUG ADICIONADO AQUI ---
-                System.out.println("\n\n=============== DEBUG PONTO 2: JwtAuthenticationFilter ===============");
-                System.out.println("Usuário autenticado e inserido no Contexto de Segurança.");
-                System.out.println("Objeto de autenticação: " + SecurityContextHolder.getContext().getAuthentication());
-                System.out.println("======================================================================\n\n");
+//                System.out.println("\n\n=============== DEBUG PONTO 2: JwtAuthenticationFilter ===============");
+//                System.out.println("Usuário autenticado e inserido no Contexto de Segurança.");
+//                System.out.println("Objeto de autenticação: " + SecurityContextHolder.getContext().getAuthentication());
+//                System.out.println("======================================================================\n\n");
                 // ------------------------------------------
             }
         }

@@ -102,10 +102,10 @@ public class SecurityManager {
                     .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
 
             // 2. ADICIONAMOS O LOG DE DEBUG AQUI
-            System.out.println("\n\n=============== DEBUG PONTO 1: UserDetailsService (SecurityManager) ===============");
-            System.out.println("Usuário carregado do banco: " + userDetails.getUsername());
-            System.out.println("Permissões (Authorities) encontradas: " + userDetails.getAuthorities());
-            System.out.println("====================================================================================\n\n");
+//            System.out.println("\n\n=============== DEBUG PONTO 1: UserDetailsService (SecurityManager) ===============");
+//            System.out.println("Usuário carregado do banco: " + userDetails.getUsername());
+//            System.out.println("Permissões (Authorities) encontradas: " + userDetails.getAuthorities());
+//            System.out.println("====================================================================================\n\n");
 
             // 3. Retornamos o usuário encontrado
             return userDetails;

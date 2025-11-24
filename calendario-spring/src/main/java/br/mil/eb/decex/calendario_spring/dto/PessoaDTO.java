@@ -49,6 +49,7 @@ public record PessoaDTO(
         // Substitua o @Pattern atual por este:
         @Pattern(regexp = "^810 - \\d{4}$", message = "Formato do ramal inválido. Deve estar no formato 810 - 0000")
         String ramal,
+
         @NotNull
         String caminho,
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")

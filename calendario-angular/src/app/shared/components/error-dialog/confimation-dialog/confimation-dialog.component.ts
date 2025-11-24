@@ -9,6 +9,7 @@ import { MatButton } from '@angular/material/button';
     standalone: true,
     imports: [MatDialogContent, MatDialogActions, MatButton]
 })
+//Original v2
 export class ConfimationDialogComponent {
 
   constructor(
@@ -17,7 +18,11 @@ export class ConfimationDialogComponent {
   ){ }
 
   onConfirm(result: boolean): void {
-    this.dialogRef.close(result);
+    // CORREÇÃO: Envolvemos o close em um setTimeout
+    // Isso força a execução a esperar o ciclo atual do Angular terminar
+    setTimeout(() => {
+      this.dialogRef.close(result);
+    }, 0);
   }
 
 }

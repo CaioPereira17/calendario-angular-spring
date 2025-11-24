@@ -2,15 +2,15 @@
 
   <mat-toolbar-row>
     @if (isLoggedIn) {
-      <button class="button-menu"  mat-icon-button (click)="opened=!opened">
-        <mat-icon>menu</mat-icon>
-      </button>
+    <button class="button-menu" mat-icon-button (click)="opened=!opened">
+      <mat-icon>menu</mat-icon>
+    </button>
     }
 
 
 
 
-    <span class="logo-container" >
+    <span class="logo-container">
       <img class="logo-logout" src="assets/image/decex-logo.png" alt="DECEx">
       <span class="logo-text">
         Departamento de Educação e Cultura do Exército
@@ -20,30 +20,35 @@
 
     @if (isLoggedIn) {
 
-      <button  class="button-logout"  mat-icon-button (click)="logout()">
-        <mat-icon>logout</mat-icon>
-      </button>
+    <button class="button-logout" mat-icon-button (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
     }
-    @if (!isLoggedIn) {
+    <!-- @if (!isLoggedIn) {
 
       <button  class="button-login"  mat-icon-button (click)="login()">
         <mat-icon>login</mat-icon>
       </button>
+    } -->
+    <!-- CORREÇÃO AQUI: Adicionei "&& mostrarBotaoLogin" -->
+    @if (!isLoggedIn && mostrarBotaoLogin) {
+    <button class="button-login" mat-icon-button (click)="login()">
+      <mat-icon>login</mat-icon>
+    </button>
     }
   </mat-toolbar-row>
 
 </mat-toolbar>
 
-<mat-sidenav-container >
+<mat-sidenav-container>
   @if (isLoggedIn) {
 
-    <mat-sidenav  [(opened)]="opened" mode="side" [style.width]="'370px'">
-      <app-custom-sidenav/>
-    </mat-sidenav>
+  <mat-sidenav [(opened)]="opened" mode="side" [style.width]="'370px'">
+    <app-custom-sidenav />
+  </mat-sidenav>
 
   }
   <mat-sidenav-content>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
-

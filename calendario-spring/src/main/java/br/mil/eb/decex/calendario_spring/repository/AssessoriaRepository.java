@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import br.mil.eb.decex.calendario_spring.modelo.Assessoria;
 
+import java.util.Optional; // <-- Adicione esta importação no topo do arquivo //correção an criação do perfil com assessoria. (calendário spring.)
+
 @Repository
 public interface AssessoriaRepository extends JpaRepository<Assessoria, Long> {
 
@@ -22,6 +24,9 @@ public interface AssessoriaRepository extends JpaRepository<Assessoria, Long> {
 
     @Query("SELECT a FROM Assessoria a WHERE LOWER (a.sigla) LIKE LOWER(CONCAT('%', :termo, '%')) ")    
     Page<Assessoria> findBySigla(String termo, Pageable pageable);
+
+    // ADICIONE ESTA LINHA: tratamento de verificação de assessoria.(calendário spring.)
+    Optional<Assessoria> findBySigla(String sigla);
 
     // List<Assessoria> findAssessoriasWithoutAssessoriaSigla(String sigla, Pageable pageable);
 }

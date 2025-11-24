@@ -39,10 +39,21 @@ public class CalendarioSpringApplication {
             // Exemplo de verificação antes de criar assessoria
 
             //Criação das Assessorias
-            Assessoria assessoria = new Assessoria();
-            assessoria.setDescricao("Divisão de Tecnologia da Informação");
-            assessoria.setSigla("DTI");
-            assessoriaRepository.save(assessoria);
+//            Assessoria assessoria = new Assessoria();
+//            assessoria.setDescricao("Divisão de Tecnologia da Informação");
+//            assessoria.setSigla("DTI");
+//            assessoriaRepository.save(assessoria);
+
+            // --- CORREÇÃO PASSO 1 ---
+            // Primeiro, verifique se a Assessoria "DTI" existe.
+            // Se não existir, crie-a.
+            Assessoria assessoriaDTI = assessoriaRepository.findBySigla("DTI")
+                    .orElseGet(() -> {
+                        Assessoria novaAssessoria = new Assessoria();
+                        novaAssessoria.setDescricao("Divisão de Tecnologia da Informação");
+                        novaAssessoria.setSigla("DTI");
+                        return assessoriaRepository.save(novaAssessoria);
+                    });
 
             // Exemplo de verificação antes de criar Pessoa
             Pessoa pessoa = pessoaRepository.findByIdentidade("019562303-8")
@@ -59,7 +70,9 @@ public class CalendarioSpringApplication {
                         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                         novaPessoa.setDataUltimaPromocao(LocalDate.parse("25/11/2025", formato));
 
-                        novaPessoa.setAssessoria(assessoria);
+                        // novaPessoa.setAssessoria(assessoria);
+                        // !! USE A ASSESSORIA QUE GARANTIMOS QUE EXISTE !!
+                        novaPessoa.setAssessoria(assessoriaDTI);
                         novaPessoa.setRamal("8105678");
                         novaPessoa.setCaminho("http://localhost:8080/media/0195623038.jpg");
 
