@@ -84,17 +84,11 @@ public class Pessoa implements Serializable {
     @Column
     private TipoAcesso tipoAcesso;
 
-//    @NotNull
-//    @Pattern(
-//            regexp = "^810 - \\d{4}$",
-//            message = "Formato do ramal inválido. Deve estar no formato 810 - 0000"
-//    )
-//    @Column
-//    private String ramal;
+    // DEPOIS (Permissivo, aceita números, espaços e traços):
     @NotNull
     @Pattern(
-            regexp = "^\\d+$", // Garante que a string contém um ou mais dígitos, e nada mais
-            message = "Formato do ramal inválido. Deve conter apenas números."
+            regexp = "^[0-9\\- ]+$",
+            message = "Formato do ramal inválido. Apenas números, traços e espaços são permitidos."
     )
     @Column
     private String ramal;
