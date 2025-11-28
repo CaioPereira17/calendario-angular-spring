@@ -1,4 +1,5 @@
-<h2>Agendar para {{ data.date.toLocaleString() }}</h2>
+<!-- <h2>Agendar para {{ data.date.toLocaleString() }}</h2> -->
+<h2 mat-dialog-title>Agendar para {{ data.date | date: 'dd/MM/yyyy' : 'UTC' }}</h2>
 <mat-dialog-content>
   <form [formGroup]="form">
 
@@ -29,54 +30,53 @@
     </output>
   </mat-form-field> -->
 
-  <mat-form-field>
-    <mat-label>Solicitante</mat-label>
-    <mat-select formControlName="pessoa" (selectionChange)="onPessoaChange($event.value)">
-      @for (pessoa of pessoas; track pessoa) {
+    <mat-form-field>
+      <mat-label>Solicitante</mat-label>
+      <mat-select formControlName="pessoa" (selectionChange)="onPessoaChange($event.value)">
+        @for (pessoa of pessoas; track pessoa) {
         <mat-option [value]="pessoa._id">
           {{ pessoa.postoGraduacao}} - {{ pessoa.nomeGuerra }}
         </mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+        }
+      </mat-select>
+    </mat-form-field>
 
 
-  <mat-form-field>
-    <mat-label>Acessórios</mat-label>
-    <mat-select formControlName="acessorios" multiple (selectionChange)="onAcessoriosChange($event)">
-      @for (acessorio of acessorios; track acessorio) {
+    <mat-form-field>
+      <mat-label>Acessórios</mat-label>
+      <mat-select formControlName="acessorios" multiple (selectionChange)="onAcessoriosChange($event)">
+        @for (acessorio of acessorios; track acessorio) {
         <mat-option [value]="acessorio.viewValue"> <!-- valor correto -->
           {{ acessorio.viewValue }}
         </mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
+        }
+      </mat-select>
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>Audiência</mat-label>
-    <input matInput type="text" formControlName="audiencia">
-  </mat-form-field>
+    <mat-form-field>
+      <mat-label>Audiência</mat-label>
+      <input matInput type="text" formControlName="audiencia">
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>Evento</mat-label>
-    <input matInput type="text" formControlName="evento">
-  </mat-form-field>
+    <mat-form-field>
+      <mat-label>Evento</mat-label>
+      <input matInput type="text" formControlName="evento">
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>Diex n°</mat-label>
-    <input matInput type="text" formControlName="diex">
-  </mat-form-field>
+    <mat-form-field>
+      <mat-label>Diex n°</mat-label>
+      <input matInput type="text" formControlName="diex">
+    </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>Militar de ligação</mat-label>
-    <input matInput type="text" formControlName="militarLigacao">
-  </mat-form-field>
+    <mat-form-field>
+      <mat-label>Militar de ligação</mat-label>
+      <input matInput type="text" formControlName="militarLigacao">
+    </mat-form-field>
 
-</form>
+  </form>
 </mat-dialog-content>
 
 <mat-dialog-actions class="buttons">
   <button mat-raised-button color="primary" (click)="onSubmit()">Agendar</button>
   <button mat-raised-button (click)="dialogRef.close()">Cancelar</button>
 </mat-dialog-actions>
-
