@@ -63,36 +63,36 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum PostoGraduacao {
 
-    GEN_EXERCITO("Gen Ex", 1),
-    GEN_DIVISAO("Gen Div", 2),
-    GEN_DIVISAO_R1("Gen Div R1", 3), // R1
-    GEN_BRIGADA("Gen Bda", 4),
-    GEN_BRIGADA_R1("Gen Bda R1", 5), // R1
-    CORONEL("Cel", 6),
-    CORONEL_R1("Cel R1", 7),         // R1
-    TEN_CORONEL("Ten Cel", 8),
-    TEN_CORONEL_R1("Ten Cel R1", 9), // R1
-    MAJOR("Maj", 10),
-    MAJOR_R1("Maj R1", 11),          // R1
-    CAPITAO("Cap", 12),
-    CAPITAO_R1("Cap R1", 13),        // R1
-    PRI_TENENTE("1º Ten", 14),
-    PRI_TENENTE_R1("1º Ten R1", 15), // R1
-    SEG_TENENTE("2º Ten", 16),
-    SEG_TENENTE_R1("2º Ten R1", 17), // R1
-    ASP("Asp", 18),
-    ASP_R1("Asp R1", 19),            // R1
-    SUBTENENTE("ST", 20),
-    SUBTENENTE_R1("ST R1", 21),      // R1
-    PRI_SARGENTO("1º SGT", 22),
-    PRI_SARGENTO_R1("1º SGT R1", 23),// R1
-    SEG_SARGENTO("2º SGT", 24),
-    SEG_SARGENTO_R1("2º SGT R1", 25),// R1
-    TER_SARGENTO("3º SGT", 26),
-    TER_SARGENTO_R1("3º SGT R1", 27),// R1
-    CABO("Cabo", 28),
-    SOLDADO("Soldado", 29),
-    FUNC_CIV("Funcionário Civil", 30);
+    GEN_EXERCITO("Gen Ex", 0),
+    GEN_DIVISAO("Gen Div", 1),
+    GEN_DIVISAO_R1("Gen Div R1", 2), // R1
+    GEN_BRIGADA("Gen Bda", 3),
+    GEN_BRIGADA_R1("Gen Bda R1", 4), // R1
+    CORONEL("Cel", 5),
+    CORONEL_R1("Cel R1", 6),         // R1
+    TEN_CORONEL("Ten Cel", 7),
+    TEN_CORONEL_R1("Ten Cel R1", 8), // R1
+    MAJOR("Maj", 9),
+    MAJOR_R1("Maj R1", 10),          // R1
+    CAPITAO("Cap", 11),
+    CAPITAO_R1("Cap R1", 12),        // R1
+    PRI_TENENTE("1º Ten", 13),
+    PRI_TENENTE_R1("1º Ten R1", 14), // R1
+    SEG_TENENTE("2º Ten", 15),
+    SEG_TENENTE_R1("2º Ten R1", 16), // R1
+    ASP("Asp", 17),
+    ASP_R1("Asp R1", 18),            // R1
+    SUBTENENTE("ST", 19),
+    SUBTENENTE_R1("ST R1", 20),      // R1
+    PRI_SARGENTO("1º SGT", 21),
+    PRI_SARGENTO_R1("1º SGT R1", 22),// R1
+    SEG_SARGENTO("2º SGT", 23),
+    SEG_SARGENTO_R1("2º SGT R1", 24),// R1
+    TER_SARGENTO("3º SGT", 25),
+    TER_SARGENTO_R1("3º SGT R1", 26),// R1
+    CABO("Cabo", 27),
+    SOLDADO("Soldado", 28),
+    FUNC_CIV("Funcionário Civil", 29);
 
     private String value;
     private int ordem;
