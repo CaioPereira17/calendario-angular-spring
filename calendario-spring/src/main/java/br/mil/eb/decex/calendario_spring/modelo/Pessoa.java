@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import java.time.LocalDate;
 
 @SQLDelete(sql = "UPDATE Pessoa SET liberado = 'false' WHERE id = ?")
 @Entity
@@ -99,6 +100,9 @@ public class Pessoa implements Serializable {
 
     @Column(name = "data_ultima_promocao")
     private LocalDate dataUltimaPromocao;
+
+    @Column(name = "dt_praca")
+    private LocalDate dtPraca;
 
     // === TRANSIENTES (não persistem no BD) ===
     @Transient
