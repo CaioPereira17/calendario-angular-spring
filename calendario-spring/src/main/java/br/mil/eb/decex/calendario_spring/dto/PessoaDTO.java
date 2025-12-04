@@ -19,7 +19,11 @@ public record PessoaDTO(
 
         @NotBlank
         @NotNull
-        @Pattern(regexp = "^(\\d{9}-\\d{1}|\\d{3}\\.\\d{3}\\.\\d{3}-\\d)$", message = "Formato de identidade inválido. Use 000.000.000-0 ou 000000000-0")
+        // 1. \\d{10} -> Aceita Identidade Militar (10 dígitos numéricos puros, ex: 0115404873)
+        // 2. \\d{9}-\\d{1,2} -> Aceita formato antigo sem pontos (ex: 123456789-0)
+        // 3. \\d{3}\\.\\d{3}\\.\\d{3}-\\d{1,2} -> Aceita CPF formatado
+        @Pattern(regexp = "^(\\d{10}|\\d{9}-\\d{1,2}|\\d{3}\\.\\d{3}\\.\\d{3}-\\d{1,2})$",
+                message = "Identidade inválida. Aceita: 10 dígitos (Militar), 000000000-00 ou 000.000.000-00")
         String identidade,
 
         Users users,
@@ -48,12 +52,14 @@ public record PessoaDTO(
         @NotNull
         TipoAcesso tipoAcesso,
 
-        // CORREÇÃO: O regex agora aceita apenas números (ex: 8105678) ou o formato formatado (ex: 810 - 5678)
         @Pattern(regexp = "^[0-9\\- ]+$", message = "Ramal inválido. Aceita apenas números, espaços e traços.")
         String ramal,
 
         @JsonProperty("dt_praca")
         LocalDate dtPraca,
+
+        @JsonProperty("dt_nascimento")
+        LocalDate dtNascimento,
 
         @NotNull
         String caminho,

@@ -110,11 +110,13 @@ public class PessoaService {
     // Responsável por organizar dentro da antiguidade: POSTO > PROMOÇÃO > DATA PRAÇA // CB CAIO TEN GUTIERRE E RAMOS
     public PessoaPageDTO search(String termo, @PositiveOrZero int page, @Positive @Max(100) int pageSize) {
 
-        // ORDENAÇÃO DE ANTIGUIDADE MILITAR:
+        // ORDENAÇÃO DE ANTIGUIDADE MILITAR COMPLETA:
         Sort sort = Sort.by(
                 Sort.Order.asc("postoGraduacaoOrdinal"), // 1. Hierarquia (General > Cel > Ten)
-                Sort.Order.asc("dataUltimaPromocao"),    // 2. Antiguidade no posto (Data menor = mais antigo)
-                Sort.Order.asc("dtPraca")                // 3. Desempate: Tempo de serviço (Data menor = mais antigo)
+                Sort.Order.asc("dataUltimaPromocao"),    // 2. Antiguidade no posto
+                Sort.Order.asc("dtPraca"),               // 3. Tempo de serviço
+                Sort.Order.asc("dtNascimento"),          // 4. Idade (Mais velho ganha)
+                Sort.Order.asc("nome")                   // 5. Ordem Alfabética (A-Z)
         );
 
         Page<Pessoa> pagePessoa = pessoaRepository.findByNomeGuerraOrAssessoriaAndLiberadoTrue(termo,
@@ -137,7 +139,8 @@ public class PessoaService {
                     pessoaDTO.liberado(),
                     pessoaDTO.tipoAcesso(),
                     pessoaDTO.ramal(),
-                    pessoaDTO.dtPraca(), // Campo Novo (Data de Praça)
+                    pessoaDTO.dtPraca(),
+                    pessoaDTO.dtNascimento(),
                     caminhoAtualizado,
                     pessoaDTO.dataUltimaPromocao()
             );
@@ -163,7 +166,8 @@ public class PessoaService {
                     recordFound.setNomeGuerra(pessoa.nomeGuerra());
                     recordFound.setPostoGraduacao(pessoa.postoGraduacao());
                     recordFound.setDataUltimaPromocao(pessoa.dataUltimaPromocao());
-                    recordFound.setDtPraca(pessoa.dtPraca()); // Atualiza a Data de Praça no Banco
+                    recordFound.setDtPraca(pessoa.dtPraca());
+                    recordFound.setDtNascimento(pessoa.dtNascimento());
                     recordFound.setAssessoria(pessoa.assessoria());
                     recordFound.setCaminho(pessoa.caminho());
                     recordFound.setLiberado(pessoa.liberado());

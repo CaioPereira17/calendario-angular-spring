@@ -239,6 +239,7 @@ import { MatInput } from '@angular/material/input';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatCard, MatCardContent, MatCardActions } from '@angular/material/card';
+import { dt } from '@fullcalendar/core/internal-common';
 
 @Component({
   selector: 'app-pessoa-form',
@@ -322,6 +323,7 @@ export class PessoasFormComponent implements OnInit {
       
       // === CAMPO ADICIONADO NO FORMBUILDER ===
       dt_praca: [''], 
+      dt_nascimento: [''],
       
       tipoAcesso: ['', Validators.required],
       assessoria: [null, Validators.required],
@@ -365,7 +367,7 @@ export class PessoasFormComponent implements OnInit {
       // === CORREÇÃO: Preenche o valor vindo do banco ===
       // Nota: Verifique se o backend manda 'dtPraca' (camelCase) ou 'dt_praca' (snake_case)
       dt_praca: pessoa.dtPraca || pessoa.dt_praca || '', 
-      
+      dt_nascimento: pessoa.dtNascimento || pessoa.dt_nascimento || '',      
       tipoAcesso: pessoa.tipoAcesso || '',
       assessoria: pessoa.assessoria || null,
       assessoriaFilha: pessoa.assessoria || null,

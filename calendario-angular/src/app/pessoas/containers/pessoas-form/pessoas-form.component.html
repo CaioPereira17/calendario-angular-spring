@@ -100,6 +100,15 @@
           </mat-form-field>
 
           <mat-form-field class="full-width">
+            <mat-label>Data de nascimento</mat-label>
+            <input matInput type="date" placeholder="Data de nascimento" formControlName="dt_nascimento">
+
+            @if (form.get('dt_nascimento')?.invalid) {
+            <mat-error>{{errorMessage("dt_nascimento")}}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
             <mat-label>Tipo de acesso</mat-label>
             <mat-select formControlName="tipoAcesso">
               <mat-option value="null">None</mat-option>

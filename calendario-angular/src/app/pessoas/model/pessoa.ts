@@ -20,6 +20,8 @@ export interface Pessoa {
 
 	dtPraca?: string;
 
+	dtNascimento?: string;
+
 	dataUltimaPromocao: string;
 
 	assessoria: Assessoria;

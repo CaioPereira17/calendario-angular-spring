@@ -98,6 +98,10 @@ public class Pessoa implements Serializable {
     @Column
     private String caminho;
 
+    @NotNull
+    @Column(name="dt_nascimento")
+    private LocalDate dtNascimento;
+
     @Column(name = "data_ultima_promocao")
     private LocalDate dataUltimaPromocao;
 
