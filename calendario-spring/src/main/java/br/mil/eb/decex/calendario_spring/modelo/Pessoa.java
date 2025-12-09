@@ -43,9 +43,11 @@ public class Pessoa implements Serializable {
     private Long id;
 
     @NotNull
+    // ATUALIZE ESTE REGEX PARA IGUALAR AO DTO:
+    // Aceita: 10 dígitos, OU formato antigo, OU formato novo com 2 dígitos
     @Pattern(
-            regexp = "^(\\d{9}-\\d{1}|\\d{3}\\.\\d{3}\\.\\d{3}-\\d)$",
-            message = "Formato de identidade inválido. Use 000.000.000-0 ou 000000000-0"
+            regexp = "^(\\d{10}|\\d{9}-\\d{1,2}|\\d{3}\\.\\d{3}\\.\\d{3}-\\d{1,2})$",
+            message = "Formato de identidade inválido. Aceita: 10 dígitos, 000.000.000-00 ou 000000000-00"
     )
     @Column(unique = true)
     private String identidade;

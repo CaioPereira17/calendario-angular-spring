@@ -70,8 +70,12 @@ public class CalendarioSpringApplication {
                         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                         novaPessoa.setDataUltimaPromocao(LocalDate.parse("25/11/2025", formato));
 
-                        // novaPessoa.setAssessoria(assessoria);
-                        // !! USE A ASSESSORIA QUE GARANTIMOS QUE EXISTE !!
+                        // --- CORREÇÃO AQUI: Adicione a Data de Nascimento e Data de Praça ---
+                        // Como são campos @NotNull, você é obrigado a preencher aqui também.
+                        novaPessoa.setDtNascimento(LocalDate.parse("01/01/1980", formato));
+                        novaPessoa.setDtPraca(LocalDate.parse("01/03/1999", formato));
+                        // -------------------------------------------------------------------
+
                         novaPessoa.setAssessoria(assessoriaDTI);
                         novaPessoa.setRamal("8105678");
                         novaPessoa.setCaminho("http://localhost:8080/media/0195623038.jpg");
