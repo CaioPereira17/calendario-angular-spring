@@ -74,7 +74,7 @@ export class UsuariosComponent implements OnInit {
   // Se a usuario tiver uma assessoria associada, atualize o campo 'assessoria'
   if (selectedUsuario && selectedUsuario.username) {
     // Add meaningful code here or remove the block if not needed
-    console.log(`Selected usuario has assessoria: ${selectedUsuario.username}`);
+    //console.log(`Selected usuario has assessoria: ${selectedUsuario.username}`);
   }
 }
 

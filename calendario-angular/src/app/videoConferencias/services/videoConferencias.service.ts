@@ -48,7 +48,7 @@ export class VideoConferenciasService {
       params.dataFim = dataFim;
     }
 
-    console.log('Parâmetros enviados:', params);
+    //console.log('Parâmetros enviados:', params);
 
     return this.httpClient.get<VideoConferenciaPage>('/api/videoConferencias/search-agenda', { params });
   }
@@ -67,7 +67,7 @@ export class VideoConferenciasService {
    }
 
    save(record: Partial<VideoConferencia>) {
-    console.log(record);
+    //console.log(record);
     if (record.id != null) {
      // console.log('update');
       return this.update(record);

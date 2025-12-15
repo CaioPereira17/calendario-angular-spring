@@ -124,42 +124,6 @@ openVideoConferenciaModal(day: DateTime, videoConferencia?: VideoConferencia): v
   }
 }
 
-// openVideoConferenciaModal(day: DateTime, videoConferencia?: any): void {
-//   const dateOnly = day.startOf('day');
-
-//   const dataToPass = {
-//     date: dateOnly,
-//     videoConferencia: videoConferencia || null
-//   };
-
-//   const dialogRef = this.dialog.open(VideoConferenciaModalComponent, {
-//     width: '600px',
-//     data: dataToPass,
-//     id: videoConferencia?.id // Verifica se o videoConferencia possui um ID
-//   });
-
-//   dialogRef.afterClosed().subscribe(result => {
-//     if (result) {
-//       if (this.isVideoConferenciaValido(result, day)) {
-//         // Aqui você deve adicionar a lógica para salvar o videoConferencia
-//         // Exemplo:
-//         this.videoConferenciasService.list().subscribe(() => {
-//           this.snackBar.open('VideoConferencia atualizado com sucesso!', 'Fechar', {
-//             duration: 3000
-//           });
-//           this.refresh(); // Atualiza a lista de videoConferencias ao fechar o modal
-//         });
-//       } else {
-//         this.snackBar.open('O videoConferencia não pode ser salvo. Existe um conflito de horário.', 'Fechar', {
-//           duration: 5000
-//         });
-//       }
-//     } else {
-//       console.log('Modal fechado sem alterações.');
-//     }
-//   });
-// }
-
   refreshCalendar(): void {
     this.videoConferenciasService.list().subscribe(videoConferencias => {
       this.videoConferencias = videoConferencias; // Atualiza o array de videoConferencias

@@ -45,7 +45,7 @@ export class AgendamentosComponent implements OnInit{
   termo = '';
 
   onResizeEnd(event: ResizeEvent): void {
-    console.log('Resize event:', event);
+    //console.log('Resize event:', event);
   }
 
   agendamentos$!: Observable<Agendamento[]>;

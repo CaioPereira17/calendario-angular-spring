@@ -98,7 +98,7 @@ export class AgendamentoModalComponent implements OnInit {
 
     this.assessoriasService.list().subscribe((data: any[]) => {
       this.assessorias = data;
-      console.log(data)
+      // console.log(data)
      });
 
      this.pessoasService.list().subscribe((data: PessoaPage) => {

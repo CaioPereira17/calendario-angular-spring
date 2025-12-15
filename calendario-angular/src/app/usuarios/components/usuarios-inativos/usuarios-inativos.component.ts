@@ -54,7 +54,7 @@ export class UsuariosInativosComponent implements OnInit {
         console.log('entrou')
         this.usuariosInativos = data.pessoas;
         this.totalElements = data.totalElements;
-        console.log('Usuarios inativas carregadas:', this.usuariosInativos);
+        //console.log('Usuarios inativas carregadas:', this.usuariosInativos);
       },
       error: (err) => console.error('Erro ao carregar usuarios inativas', err),
     });
@@ -69,11 +69,11 @@ export class UsuariosInativosComponent implements OnInit {
 
     this.usuariosService.reativarUsuario(id).subscribe({
       next: () => {
-        console.log('Usuário reativado com sucesso:', id);
+        //console.log('Usuário reativado com sucesso:', id);
         this.carregarUsuariosInativas(); // Atualiza a tabela após reativar o usuário
       },
       error: (err) => {
-        console.error('Erro ao reativar usuário:', err);
+        //console.error('Erro ao reativar usuário:', err);
       }
     });
   }

@@ -37,13 +37,4 @@ export class SelectSystemComponent implements OnInit {
       this.router.navigate(['/videoConferencias/new/']);
     }
   }
-
-  // navigateTo(system: string): void {
-  //   if (system === 'sisgepess') {
-  //     this.router.navigate(['/sisgepess/login']);
-  //   } else if (system === 'sisagenda') {
-  //     this.router.navigate(['/sisagenda/login']);
-  //   }
-  // }
-
 }

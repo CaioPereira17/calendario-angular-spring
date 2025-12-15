@@ -98,7 +98,7 @@ refresh2(pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 }, termo
       this.pageIndex = pageEvent.pageIndex;
       this.pageSize = pageEvent.pageSize;
 
-      console.log('VideoConferencias carregados:', this.videoConferencias);
+      //console.log('VideoConferencias carregados:', this.videoConferencias);
     }),
     catchError(error => {
       this.onError('Erro ao carregar videoConferencias');
@@ -107,20 +107,6 @@ refresh2(pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 }, termo
   );
 }
 
-
-// refresh2(pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 }, termo = '') {
-//   this.videoConferencias2$ = this.videoConferenciasService.list2(termo, pageEvent.pageIndex, pageEvent.pageSize)
-//   .pipe(
-//     tap(() => {
-//       this.pageIndex = pageEvent.pageIndex;
-//       this.pageSize = pageEvent.pageSize;
-//     }),
-//     catchError(error => {
-//       this.onError('Erro ao carregar videoConferencias');
-//       return of({ videoConferencias: [], content: [], totalElements: 0, totalPages: 0 });
-//     })
-//   );
-// }
 
 refresh3(pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 }, termo = '') {
   const dataInicio = this.dataInicio ?? null;
@@ -132,7 +118,7 @@ refresh3(pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 }, termo
       this.pageIndex = pageEvent.pageIndex;
       this.pageSize = pageEvent.pageSize;
 
-      console.log('VideoConferencias carregados:', this.videoConferencias);
+      //console.log('VideoConferencias carregados:', this.videoConferencias);
     }),
     catchError(error => {
       this.onError('Erro ao carregar videoConferencias');
@@ -150,7 +136,7 @@ onVideoConferenciaChange(videoConferenciaId: string): void {
   // Se a pessoa tiver uma assessoria associada, atualize o campo 'assessoria'
   if (selectedVideoConferencia && selectedVideoConferencia.assessoria) {
     // Add meaningful code here or remove the block if not needed
-    console.log(`Selected pessoa has assessoria: ${selectedVideoConferencia.assessoria}`);
+    //console.log(`Selected pessoa has assessoria: ${selectedVideoConferencia.assessoria}`);
   }
 }
 
@@ -161,7 +147,7 @@ onSearchByDate(type: 'inicio' | 'fim', value: Date | null): void {
     this.dataFim = value ? value.toISOString().split('T')[0] : null; // Converte para 'yyyy-MM-dd'
   }
 
-  console.log('Datas atualizadas:', { dataInicio: this.dataInicio, dataFim: this.dataFim });
+  //console.log('Datas atualizadas:', { dataInicio: this.dataInicio, dataFim: this.dataFim });
 
   // Se ambos os campos de data estão vazios, reseta para o estado inicial
   if (!this.dataInicio && !this.dataFim) {

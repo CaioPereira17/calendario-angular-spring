@@ -66,7 +66,7 @@ export class AgendamentosListaComponent implements OnInit {
 
    //Novo método para escutar o evento de edição
   onEdit(agendamento: Agendamento): void {
-    console.log(agendamento.id)
+    // console.log(agendamento.id)
     if (agendamento.dataInicio) {
         const day = DateTime.fromISO(agendamento.dataInicio); // Mantém como DateTime
         // const day = DateTime.local(); // Usa a data atual como DateTime

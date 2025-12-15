@@ -442,7 +442,7 @@ export class VideoConferenciaModalComponent implements OnInit {
 
     this.assessoriasService.list().subscribe((data: any[]) => {
       this.assessorias = data;
-      console.log(data);
+      //console.log(data);
     });
 
     this.pessoasService.list().subscribe((data: PessoaPage) => {
@@ -485,13 +485,13 @@ export class VideoConferenciaModalComponent implements OnInit {
         diex: videoConferencia.diex || '',
         militarLigacao: videoConferencia.militarLigacao || '',
       });
-      console.log("Formulário preenchido (Edição/Novo com Preload): ", this.form.value);
+      //console.log("Formulário preenchido (Edição/Novo com Preload): ", this.form.value);
     } else {
       this.form.patchValue({
         dataInicio: this.dateSelecionada,
         dataFim: this.dateSelecionada,
       });
-      console.log('Formulário preenchido (Novo simples):', this.form.value);
+      //console.log('Formulário preenchido (Novo simples):', this.form.value);
     }
 
     // Escuta mudanças no campo "pessoa"
@@ -544,7 +544,7 @@ export class VideoConferenciaModalComponent implements OnInit {
     if (this.form.valid && !this.isSubmitting) {
       this.isSubmitting = true;
 
-      console.log('Valor de dataInicio antes de enviar:', this.form.value.dataInicio);
+      //console.log('Valor de dataInicio antes de enviar:', this.form.value.dataInicio);
 
       const videoConferencia = {
         ...this.form.value,

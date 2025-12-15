@@ -49,7 +49,7 @@ export class AgendamentosService {
       params.dataFim = dataFim;
     }
 
-    console.log('Parâmetros enviados:', params);
+    //console.log('Parâmetros enviados:', params);
 
     return this.httpClient.get<AgendamentoPage>('/api/agendamentos/search-agenda', { params });
   }
