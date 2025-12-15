@@ -63,16 +63,16 @@ export class LoginComponent implements OnInit {
   // (Seus forms e métodos antigos removidos para limpeza...)
 
   logar(): void {
-    console.log('1. Tentando logar com:', this.login);
+    //console.log('1. Tentando logar com:', this.login);
 
     this.loginService.logar(this.login).subscribe({
       
       next: token => {
-        console.log('2. Resposta do backend recebida. Token:', token);
+        //console.log('2. Resposta do backend recebida. Token:', token);
 
         if (token) {
-          console.log('Sistema Atual:', this.siglaSistema);
-          console.log('3. Login OK. Salvando token e redirecionando...');
+          //console.log('Sistema Atual:', this.siglaSistema);
+          //console.log('3. Login OK. Salvando token e redirecionando...');
           this.loginService.addToken(token);
 
           // --- CORREÇÃO NO REDIRECIONAMENTO ---
