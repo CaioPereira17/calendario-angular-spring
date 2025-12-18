@@ -77,6 +77,9 @@
 </mat-dialog-content>
 
 <mat-dialog-actions class="buttons">
-  <button mat-raised-button color="primary" (click)="onSubmit()">Agendar</button>
-  <button mat-raised-button (click)="dialogRef.close()">Cancelar</button>
+  
+  @if(!form === null || form.invalid) {
+      <button mat-raised-button color="primary" (click)="onSubmit()">Agendar</button>
+    }
+  <button mat-raised-button (click)="dialogRef.close()">Fechar</button>
 </mat-dialog-actions>

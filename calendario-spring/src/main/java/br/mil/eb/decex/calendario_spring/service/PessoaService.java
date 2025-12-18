@@ -351,7 +351,6 @@ public class PessoaService {
             )));
             logger.info("=================================================");
         }
-        // --- FIM DO PRINT DE DEBUG ---
 
         return new PessoaPageDTO(pessoas, pagePessoa.getTotalElements(), pagePessoa.getTotalPages());
     }
