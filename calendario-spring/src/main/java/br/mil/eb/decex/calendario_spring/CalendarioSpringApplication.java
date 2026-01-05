@@ -1,10 +1,5 @@
 package br.mil.eb.decex.calendario_spring;
 
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-
 import br.mil.eb.decex.calendario_spring.enumerado.PostoGraduacao;
 import br.mil.eb.decex.calendario_spring.enumerado.TipoAcesso;
 import br.mil.eb.decex.calendario_spring.modelo.Assessoria;
@@ -15,11 +10,13 @@ import br.mil.eb.decex.calendario_spring.repository.AssessoriaRepository;
 import br.mil.eb.decex.calendario_spring.repository.PessoaRepository;
 import br.mil.eb.decex.calendario_spring.repository.PessoaTIInfoRepository;
 import br.mil.eb.decex.calendario_spring.repository.UsuarioRepository;
-import org.springframework.data.domain.Pageable;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 @SpringBootApplication
 public class CalendarioSpringApplication {

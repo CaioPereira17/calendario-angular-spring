@@ -1,28 +1,20 @@
 package br.mil.eb.decex.calendario_spring.modelo;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.hibernate.annotations.SQLDelete;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import br.mil.eb.decex.calendario_spring.enumerado.PostoGraduacao;
 import br.mil.eb.decex.calendario_spring.enumerado.TipoAcesso;
 import br.mil.eb.decex.calendario_spring.modelo.jaas.Users;
 import br.mil.eb.decex.calendario_spring.util.EncodingSHA256;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @SQLDelete(sql = "UPDATE Pessoa SET liberado = 'false' WHERE id = ?")
 @Entity
