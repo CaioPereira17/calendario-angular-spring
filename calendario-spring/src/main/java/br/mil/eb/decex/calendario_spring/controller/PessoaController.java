@@ -28,7 +28,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/pessoas")
 public class PessoaController {
-    
+
     private final PessoaRepository pessoaRepository;
     private final PessoaService pessoaService;
     private final PessoaMapper  pessoaMapper;
@@ -48,13 +48,13 @@ public class PessoaController {
         this.pessoaMapper = pessoaMapper;
     }
 
- 
+
     @PutMapping("/reativar/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void reativarPessoa(HttpServletRequest request, @PathVariable Long id) {
-        
+
         jwtServiceGenerator.GetUser(request);
-        
+
         Pessoa pessoa = pessoaRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Pessoa não encontrada"));
         pessoa.setLiberado(true);
@@ -68,16 +68,16 @@ public class PessoaController {
 
     }
 
-   
-    
     @GetMapping("/search")
-    public PessoaPageDTO search(String termo, @RequestParam(defaultValue = "0") @PositiveOrZero int page,
-            @RequestParam(defaultValue = "10") @Positive @Max(100) int pageSize
+    public PessoaPageDTO search(
+            @RequestParam(required = false) String termo,
+            @RequestParam(defaultValue = "0") @PositiveOrZero int page,
+            @RequestParam(defaultValue = "10") @Positive @Max(100) int pageSize,
+            @RequestParam(required = false) Integer mesNascimento // <--- NOVO
     ) {
-        
-        return pessoaService.search(termo, page, pageSize);
+        // AQUI ESTÁ O ERRO: Você deve passar o mesNascimento para o serviço
+        return pessoaService.search(termo, page, pageSize, mesNascimento);
     }
-
 
 
 
@@ -89,16 +89,16 @@ public class PessoaController {
         return pessoaService.listarInativas(page, pageSize);
     }
 
-    
+
     @GetMapping ("/{id}")
     public PessoaDTO findById(@PathVariable @NotNull @Positive Long id){
         return pessoaService.findById(id);
-        
 
-    } 
-    
+
+    }
+
     @GetMapping("/posto-graduacao")
-    public ResponseEntity<PostoGraduacao[]> getPostoGraduacaoValues() {       
+    public ResponseEntity<PostoGraduacao[]> getPostoGraduacaoValues() {
         return ResponseEntity.ok(PostoGraduacao.values());
     }
 
@@ -133,7 +133,7 @@ public class PessoaController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable @NotNull @Positive Long id) {        
+    public void delete(@PathVariable @NotNull @Positive Long id) {
        pessoaService.delete(id);
     }
 

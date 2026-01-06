@@ -25,279 +25,195 @@ import { UntypedFormGroup } from '@angular/forms';
 import { AssessoriasService } from '../../../assessorias/services/assessorias.service';
 import { Assessoria } from '../../../assessorias/model/assessoria';
 
+
+
 @Component({
-    selector: 'app-pessoas',
-    templateUrl: './pessoas.component.html',
-    styleUrl: './pessoas.component.scss',
-    standalone: true,
-    imports: [MatCard, MatToolbar, PessoasListaComponent, MatPaginator, MatProgressSpinner, AsyncPipe, MatFormFieldModule, MatInputModule, MatSelectModule]
+  selector: 'app-pessoas',
+  templateUrl: './pessoas.component.html',
+  styleUrl: './pessoas.component.scss',
+  standalone: true,
+  imports: [
+    MatCard,
+    MatToolbar,
+    PessoasListaComponent,
+    MatPaginator,
+    MatProgressSpinner,
+    AsyncPipe,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule
+  ]
 })
 export class PessoasComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
+  // Paginação e Dados da Tabela
   pageIndex = 0;
   pageSize = 10;
-
-  termo = '';
-
-  postos = PostoGraduacaoList;
-
-  @Input() dataSource = new MatTableDataSource<Pessoa>();
-  // page = 0; // Página inicial
-  // size = 10; // Itens por página
-  // termo = '';
-  // totalElements = 0; // Total de elementos no banco de dados
-
   pessoas$: Observable<PessoaPage> | null = null;
+  @Input() dataSource = new MatTableDataSource<Pessoa>();
+
+  // Listas Auxiliares (Para Selects de busca interna)
+  postos = PostoGraduacaoList;
   pessoas: Pessoa[] = [];
-  pessoasOriginais: Pessoa[] = []; // Array com todos os registros originais
-
-
+  pessoasOriginais: Pessoa[] = [];
   assessorias: Assessoria[] = [];
   assessoriasOriginais: Assessoria[] = [];
 
-  form: UntypedFormGroup | undefined;
+  // Filtros Atuais
+  filtroTexto: string = '';
+  filtroMes: number | '' = '';
 
-
-
-  // pessoas$!: Observable<PessoaPage | { content: never[]; totalElements: number; totalPages: number; }>;
-
-  // pessoasService: PessoasService;
+  // Lista de Meses para o Filtro
+  listaMeses = [
+    { nome: 'Janeiro', valor: 1 }, { nome: 'Fevereiro', valor: 2 },
+    { nome: 'Março', valor: 3 }, { nome: 'Abril', valor: 4 },
+    { nome: 'Maio', valor: 5 }, { nome: 'Junho', valor: 6 },
+    { nome: 'Julho', valor: 7 }, { nome: 'Agosto', valor: 8 },
+    { nome: 'Setembro', valor: 9 }, { nome: 'Outubro', valor: 10 },
+    { nome: 'Novembro', valor: 11 }, { nome: 'Dezembro', valor: 12 }
+  ];
 
   constructor(
     private readonly pessoasService: PessoasService,
     private readonly assessoriasService: AssessoriasService,
-
     public dialog: MatDialog,
     private readonly router: Router,
     private readonly snackBar: MatSnackBar,
     private readonly route: ActivatedRoute,
+  ) {
+    // Construtor limpo. A lógica vai para o ngOnInit.
+  }
 
-
-
-  ){
+  ngOnInit(): void {
+    // 1. Carrega a tabela principal
     this.refresh();
 
-    // this.pessoas.sort((a, b) => a.postoGraduacao.localeCompare(b.postoGraduacao));
-
-    this.pessoasService.listPessCompl().subscribe((data: Pessoa[]) => {
-      this.pessoas = data;
-     });
-
-     this.assessoriasService.list().subscribe((data: Assessoria[]) => {
-      this.assessorias = data;
-     });
-   }
-
-
-
-   // Escutar mudanças no campo 'pessoa'
-onPessoaChange(pessoaId: string): void {
-  // Encontre a pessoa selecionada a partir da lista de pessoas
-  const selectedPessoa = this.pessoas.find(pessoa => pessoa._id === pessoaId);
-
-  // Se a pessoa tiver uma assessoria associada, atualize o campo 'assessoria'
-  if (selectedPessoa && selectedPessoa.assessoria) {
-    // Add meaningful code here or remove the block if not needed
-    console.log(`Selected pessoa has assessoria: ${selectedPessoa.assessoria}`);
+    // 2. Carrega as listas auxiliares para os dropdowns
+    this.carregarListasAuxiliares();
   }
-}
 
-onSearchTermChange(value: string): void {
-  if (value === '') {
-    // Restaura a tabela ao estado inicial
-    this.refresh({ length: 0, pageIndex: 0, pageSize: this.pageSize }, '');
-  } else {
-    // Aplica o filtro
-    this.refresh({ length: 0, pageIndex: 0, pageSize: this.pageSize }, value);
-  }
-}
+  // --- CARREGAMENTO DE DADOS ---
 
-filterSelectDePessoas(event: Event) {
-  const inputElement = event.target as HTMLInputElement;
-  const value = inputElement.value;
+  refresh(pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 }) {
+    // Atualiza variaveis locais de paginação
+    this.pageIndex = pageEvent.pageIndex;
+    this.pageSize = pageEvent.pageSize;
 
-  // Verifica se o valor do input está vazio
-  if (value.trim() === '') {
-    // Restaura a lista original de pessoas
-    this.pessoas = [...this.pessoasOriginais];
-  } else {
-    // Filtra os itens com base no termo digitado
-    this.pessoas = this.pessoasOriginais.filter(pessoa =>
-      pessoa.nomeGuerra.toLowerCase().includes(value.toLowerCase())
-    );
-  }
-}
-
-
-// filterSelectDePessoas(event: Event) {
-//   const inputElement = event.target as HTMLInputElement;
-//   const value = inputElement.value;
-
-//   this.pessoas = this.pessoas.filter(pessoa =>
-//     pessoa.nomeGuerra.toLowerCase().includes(value.toLowerCase())
-//     );
-// if(inputElement.value == ''){
-//   this.pessoas;
-// }
-//   }
-
-filterSelectDeAssessorias(event: Event) {
-  const inputElement = event.target as HTMLInputElement;
-  const value = inputElement.value;
-
-  // Verifica se o valor do input está vazio
-  if (value.trim() === '') {
-    // Restaura a lista original de pessoas
-    this.assessorias = [...this.assessoriasOriginais];
-  } else {
-    // Filtra os itens com base no termo digitado
-    this.assessorias = this.assessoriasOriginais.filter(assessoria =>
-      assessoria.sigla.toLowerCase().includes(value.toLowerCase())
-    );
-  }
-}
-
-// filterSelectDeAssessorias(event: Event) {
-//   const inputElement = event.target as HTMLInputElement;
-//   const value = inputElement.value;
-
-//   this.assessorias = this.assessorias.filter(assessoria =>
-//     assessoria.sigla.toLowerCase().includes(value.toLowerCase())
-//     );
-//   }
-
-// onSearchTermChange(termoOuEvento: any): void {
-//   let termo: string;
-
-//   // Verifica se o parâmetro é um evento de teclado (input) ou um valor direto (select)
-//   if (typeof termoOuEvento === 'string') {
-//     termo = termoOuEvento;
-//   } else {
-//     const inputElement = termoOuEvento.target as HTMLInputElement;
-//     termo = inputElement.value || '';
-//   }
-
-//   // Realiza a pesquisa com o termo fornecido
-//   this.refresh({ length: 0, pageIndex: 0, pageSize: this.pageSize }, termo);
-// }
-
-
-  //  onSearchTermChange(event: any) {
-  //   const inputElement = event.target as HTMLInputElement;
-  //   const termo = inputElement.value || '';
-  //   this.refresh({ length: 0, pageIndex: 0, pageSize: this.pageSize }, termo);
-  // }
-
-
-   refresh(pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10} , termo = '') {
-    this.pessoas$ = this.pessoasService.list(termo, pageEvent.pageIndex, pageEvent.pageSize)
-    .pipe(
+    // Chama o serviço passando: Texto, Paginação E O MÊS
+    // OBS: Você precisará atualizar o método .list() no PessoasService
+    this.pessoas$ = this.pessoasService.list(
+      this.filtroTexto,
+      this.pageIndex,
+      this.pageSize,
+      this.filtroMes // <--- Novo parâmetro enviado ao back
+    ).pipe(
       tap(() => {
-        this.pageIndex = pageEvent.pageIndex;
-        this.pageSize = pageEvent.pageSize;
-
+        // Sucesso
       }),
-        catchError ( error => {
+      catchError(error => {
         this.onError('Erro ao carregar pessoas');
-        return of({content: [], pessoas: [], totalElements: 0, totalPages: 10 })
+        return of({ content: [], pessoas: [], totalElements: 0, totalPages: 0 });
       })
     );
   }
 
 
-   onPageChange(event: PageEvent): void {
-    this.pageIndex = event.pageIndex;
-    this.pageSize = event.pageSize;
-    // this.search(); // Recarrega os dados da nova página
-  }
 
-  // search(): void {
-  //   this.pessoasService.list(this.termo || '', this.page, this.size).subscribe(
-  //     (response) => {
-  //       this.dataSource.data = response.content; // Atualiza os dados da tabela
-  //       this.totalElements = response.totalElements; // Atualiza o total de elementos
-  //     },
-  //     (error) => {
-  //       console.error('Erro ao buscar pessoas:', error);
-  //     }
-  //   );
-  // }
-
-  // refresh(pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10}){
-  //   this.pessoas$ = this.pessoasService.list(pageEvent.pageIndex, pageEvent.pageSize)
-  //   .pipe(
-  //     tap(() => {
-  //       this.pageIndex = pageEvent.pageIndex;
-  //       this.pageSize = pageEvent.pageSize;
-  //     }),
-  //     catchError(error => {
-
-  //       this.onError('Erro ao carregar pessoas');
-  //       return of({content: [], totalElements: 0, totalPages: 0 })
-  //     })
-  //   );
-
-  // }
-
-  onError(errorMsg: string) {
-    this.dialog.open(ErrorDialogComponent, {
-      data: errorMsg
-    });
-  }
-
-  ngOnInit(): void {
+  carregarListasAuxiliares() {
     this.pessoasService.listPessCompl().subscribe((data: Pessoa[]) => {
       this.pessoas = data;
-      this.pessoasOriginais = [...data]; // Clona os dados originais
+      this.pessoasOriginais = [...data];
     });
 
     this.assessoriasService.list().subscribe((data: Assessoria[]) => {
       this.assessorias = data;
-      this.assessoriasOriginais = [...data]; // Clona os dados originais
+      this.assessoriasOriginais = [...data];
     });
-
-    // this.pessoasService.listAssessCompl().subscribe((data: Assessoria[]) => {
-    //   this.assessorias = data;
-    //   this.assessoriasOriginais = [...data]; // Clona os dados originais
-    // });
   }
 
+  // --- EVENTOS DE FILTRO DA TABELA PRINCIPAL ---
 
-  onAdd(){
-    this.router.navigate(['new'], {relativeTo: this.route});
+  onSearchTermChange(value: string): void {
+    this.filtroTexto = value; // Guarda o estado
+    // Reseta para a primeira página ao filtrar
+    this.refresh({ length: 0, pageIndex: 0, pageSize: this.pageSize });
+  }
+
+onAniversarianteChange(mes: number | ''): void {
+    this.filtroMes = mes;
+
+    if (mes) {
+      // Se tem mês, força visualização expandida
+      this.pageSize = 10;
+      this.pageIndex = 0;
+    } else {
+      // Se limpou, volta ao padrão
+      this.pageSize = 10;
+      this.pageIndex = 0;
+    }
+
+    // --- CORREÇÃO AQUI ---
+    // Força o componente visual do paginator a saber que o tamanho mudou
+    if (this.paginator) {
+      this.paginator.pageSize = this.pageSize;
+      this.paginator.pageIndex = this.pageIndex;
+    }
+
+    // Chama o refresh
+    this.refresh({ length: 0, pageIndex: this.pageIndex, pageSize: this.pageSize });
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.refresh(event);
+  }
+
+  // --- FILTROS DE CLIENTE (DENTRO DOS SELECTS) ---
+
+  filterSelectDePessoas(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    const value = inputElement.value;
+    if (value.trim() === '') {
+      this.pessoas = [...this.pessoasOriginais];
+    } else {
+      this.pessoas = this.pessoasOriginais.filter(pessoa =>
+        pessoa.nomeGuerra.toLowerCase().includes(value.toLowerCase())
+      );
+    }
+  }
+
+  filterSelectDeAssessorias(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    const value = inputElement.value;
+    if (value.trim() === '') {
+      this.assessorias = [...this.assessoriasOriginais];
+    } else {
+      this.assessorias = this.assessoriasOriginais.filter(assessoria =>
+        assessoria.sigla.toLowerCase().includes(value.toLowerCase())
+      );
+    }
+  }
+
+  // --- AÇÕES DO CRUD ---
+
+  onAdd() {
+    this.router.navigate(['new'], { relativeTo: this.route });
   }
 
   onEdit(pessoa: Pessoa) {
-    this.router.navigate(['edit', pessoa._id], {relativeTo: this.route});
-    this.refresh();
+    if (pessoa._id) {
+      this.router.navigate(['edit', pessoa._id], { relativeTo: this.route });
     }
-
-  // onEdit(pessoa: Pessoa) {
-  //   this.refresh();
-
-  //   console.log('Pessoa para editar:', pessoa); // Adicione este log
-  //   console.log('ID da pessoa:', pessoa._id);   // Adicione este log
-
-  //   if (pessoa._id) {
-  //     this.router.navigate(['edit', pessoa._id], { relativeTo: this.route });
-  //   } else {
-  //     console.error('Erro: pessoa._id é indefinido ou nulo.', pessoa);
-  //     // Exiba uma mensagem de erro ou tome outra ação apropriada
-  //   }
-  // }
-
+  }
 
   onRemove(pessoa: Pessoa) {
-
     const dialogRef = this.dialog.open(ConfimationDialogComponent, {
       data: 'Tem certeza quanto a remoção dessa pessoa?',
     });
 
     dialogRef.afterClosed().subscribe((result: boolean) => {
-
-      if (result){
+      if (result) {
         this.pessoasService.remove(pessoa._id).subscribe(
           () => {
             this.refresh();
@@ -305,15 +221,17 @@ filterSelectDeAssessorias(event: Event) {
               duration: 3000,
               verticalPosition: 'top',
               horizontalPosition: 'center'
-
             });
-          }
+          },
+          error => this.onError('Erro ao tentar remover pessoa.')
         );
       }
     });
-
-
   }
 
-
+  onError(errorMsg: string) {
+    this.dialog.open(ErrorDialogComponent, {
+      data: errorMsg
+    });
+  }
 }

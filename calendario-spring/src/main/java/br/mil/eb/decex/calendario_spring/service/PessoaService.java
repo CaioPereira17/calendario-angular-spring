@@ -1,21 +1,5 @@
 package br.mil.eb.decex.calendario_spring.service;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
 import br.mil.eb.decex.calendario_spring.dto.PessoaDTO;
 import br.mil.eb.decex.calendario_spring.dto.PessoaPageDTO;
 import br.mil.eb.decex.calendario_spring.dto.mapper.PessoaMapper;
@@ -29,12 +13,25 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Validated
 @Service
 public class PessoaService {
 
-    private static final Logger logger = LoggerFactory.getLogger(PessoaService.class);
+
     private final PessoaRepository pessoaRepository;
     private final PessoaMapper pessoaMapper;
 
@@ -75,10 +72,6 @@ public class PessoaService {
         return pessoaTIInfoRepository.save(tiInfo);
     }
 
-    public Page<Pessoa> searchByNomeGuerraOrAssessoria(String termo, Pageable pageable) {
-        return pessoaRepository.findByNomeGuerraOrAssessoriaAndLiberadoTrue(termo, pageable);
-    }
-
     public PessoaPageDTO listarInativas(int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
         Page<Pessoa> pagePessoa = pessoaRepository.findInativas(pageable);
@@ -92,6 +85,9 @@ public class PessoaService {
 
     private String verificarCaminhoImagem(String caminho) {
         String basePath = "images/";
+        if (caminho == null || caminho.isEmpty()) {
+            return "http://localhost:8080/media/branco.jpg";
+        }
         String nomeArquivo = caminho.substring(caminho.lastIndexOf("/") + 1);
         Path caminhoImagem = Paths.get(basePath + nomeArquivo);
 
@@ -107,20 +103,22 @@ public class PessoaService {
                 .collect(Collectors.toList());
     }
 
-    // Responsável por organizar dentro da antiguidade: POSTO > PROMOÇÃO > DATA PRAÇA
-    public PessoaPageDTO search(String termo, @PositiveOrZero int page, @Positive @Max(100) int pageSize) {
+    // Responsável por organizar a hieraquia e aniversariantes do mês
+    public PessoaPageDTO search(String termo, @PositiveOrZero int page, @Positive @Max(100) int pageSize, Integer mesNascimento) {
 
         // ORDENAÇÃO DE ANTIGUIDADE MILITAR COMPLETA:
         Sort sort = Sort.by(
                 Sort.Order.asc("postoGraduacaoOrdinal"), // 1. Hierarquia
                 Sort.Order.asc("dataUltimaPromocao"),    // 2. Antiguidade no posto
-                Sort.Order.asc("dtPraca"),               // 3. Tempo de serviço (Desempate 1)
-                Sort.Order.asc("dtNascimento"),          // 4. Idade (Desempate 2)
-                Sort.Order.asc("nome")                   // 5. Ordem Alfabética (Desempate 3)
+                Sort.Order.asc("dtPraca"),               // 3. Tempo de serviço
+                Sort.Order.asc("dtNascimento"),          // 4. Idade
+                Sort.Order.asc("nome")                   // 5. Ordem Alfabética
         );
 
-        Page<Pessoa> pagePessoa = pessoaRepository.findByNomeGuerraOrAssessoriaAndLiberadoTrue(termo,
-                PageRequest.of(page, pageSize, sort));
+        Pageable pageable = PageRequest.of(page, pageSize, sort);
+
+        // Chama o método novo do repositório que sabe filtrar por Mês + Texto
+        Page<Pessoa> pagePessoa = pessoaRepository.buscarPorNomeOuAssessoriaEMes(termo, mesNascimento, pageable);
 
         List<PessoaDTO> pessoas = pagePessoa.get().map(pessoa -> {
             PessoaDTO pessoaDTO = pessoaMapper.toDTO(pessoa);
@@ -144,24 +142,6 @@ public class PessoaService {
                     pessoaDTO.dataUltimaPromocao()
             );
         }).collect(Collectors.toList());
-
-        // --- INICIO DO PRINT DE DEBUG NO CONSOLE ---
-        // Isso vai mostrar no terminal do Spring a ordem que está sendo enviada
-        if (!pessoas.isEmpty()) {
-            logger.info("=== DEBUG DE ORDENAÇÃO (Página " + page + ") ===");
-            logger.info(String.format("%-20s | %-15s | %-12s | %-12s | %-12s", "Nome Guerra", "Posto", "Dt Promo", "Dt Praça", "Dt Nasc"));
-            logger.info("----------------------------------------------------------------------------------------");
-
-            // Mostra os dados de cada pessoa na lista
-            pessoas.forEach(p -> logger.info(String.format("%-20s | %-15s | %-12s | %-12s | %-12s",
-                    p.nomeGuerra(),
-                    p.postoGraduacao(),
-                    p.dataUltimaPromocao(),
-                    p.dtPraca(),
-                    p.dtNascimento()
-            )));
-            logger.info("=================================================");
-        }
 
         return new PessoaPageDTO(pessoas, pagePessoa.getTotalElements(), pagePessoa.getTotalPages());
     }

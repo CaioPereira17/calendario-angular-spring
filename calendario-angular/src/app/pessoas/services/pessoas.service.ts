@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http'; // <--- Adicionado HttpParams
+import { first, Observable } from 'rxjs';
 
 import { Pessoa } from '../model/pessoa';
-import { HttpClient } from '@angular/common/http';
-import { first, Observable, } from 'rxjs';
 import { Assessoria } from '../../assessorias/model/assessoria';
 import { PessoaPage } from '../model/pessoa-page';
 import { environment } from '../../../environments/environment';
@@ -19,101 +19,73 @@ export class PessoasService {
     private readonly httpClient: HttpClient
   ) { }
 
-  list(termo = '', page = 0, pageSize = 10) {
+  /**
+   * Método unificado de listagem com paginação e filtros (termo e mês)
+   */
+  list(termo: string = '', page: number = 0, pageSize: number = 10, mesAniversario: number | '' = ''): Observable<PessoaPage> {
 
-    return this.httpClient.get<PessoaPage>(this.APIPESQ, { params: {termo, page, pageSize}})
-    .pipe(
-      first(),
-      //delay(5000),
-      //tap(pessoas => console.log(pessoas)),
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('pageSize', pageSize.toString()) // <--- MUDAR DE 'size' PARA 'pageSize'
+      .set('termo', termo);
 
-    );
+    if (mesAniversario) {
+      params = params.set('mesNascimento', mesAniversario.toString());
+    }
+
+    return this.httpClient.get<PessoaPage>(this.APIPESQ, { params }).pipe(first());
   }
 
   reativarPessoa(id: number): Observable<void> {
-    return this.httpClient.put<void>(`api/pessoas/reativar/${id}`, null);
+    return this.httpClient.put<void>(`${this.API}/reativar/${id}`, null); // Corrigido caminho relativo
   }
 
   listarInativas(page = 0, pageSize = 10): Observable<PessoaPage> {
-    return this.httpClient.get<PessoaPage>('api/pessoas/inativas', {
-      params: { page, pageSize }
-    });
-  }
+    // Corrigido para usar HttpParams para consistência
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('pageSize', pageSize.toString());
 
+    return this.httpClient.get<PessoaPage>(`${this.API}/inativas`, { params });
+  }
 
   listPessCompl() {
-
-    return this.httpClient.get<Pessoa[]>(this.API)
-    .pipe(
-      first(),
-      //delay(5000),
-      //tap(pessoas => console.log(pessoas)),
-
-    );
+    return this.httpClient.get<Pessoa[]>(this.API).pipe(first());
   }
-
 
   assessorias() {
-    return this.httpClient.get<Assessoria[]>(this.API)
-    .pipe(
-      first(),
-      //delay(5000),
-      //tap(assessorias => console.log(assessorias)),
-
-    );
-
-
+    return this.httpClient.get<Assessoria[]>(this.API).pipe(first());
   }
 
-  // listAssessCompl() {
-  //   return this.httpClient.get<Assessoria[]>(this.API)
-  //   .pipe(
-  //     first(),
-  //     //delay(5000),
-  //     //tap(assessorias => console.log(assessorias)),
-
-  //   );
-
-
-  // }
-
-  loadById(id: string){
-   return this.httpClient.get<Pessoa>(`${this.API}/${id}`);
+  loadById(id: string) {
+    return this.httpClient.get<Pessoa>(`${this.API}/${id}`).pipe(first());
   }
-
 
   save(record: Partial<Pessoa>) {
-    //console.log(record);
     if (record._id) {
       console.log('update', record);
       return this.update(record);
     }
-   // console.log('create');
     return this.create(record);
   }
 
-  private create(record: Partial<Pessoa>){
+  private create(record: Partial<Pessoa>) {
     return this.httpClient.post<Pessoa>(this.API, record).pipe(first());
   }
 
   private update(record: Partial<Pessoa>) {
     return this.httpClient.put<Pessoa>(`${this.API}/${record._id}`, record).pipe(first());
-
   }
 
   remove(id: string) {
     return this.httpClient.delete(`${this.API}/${id}`).pipe(first());
-
   }
 
   getPessoaTIInfo(pessoaId: string) {
-    return this.httpClient.get<any>(`${this.API}/${pessoaId}/ti-info`);
+    return this.httpClient.get<any>(`${this.API}/${pessoaId}/ti-info`).pipe(first());
   }
-  
+
   updatePessoaTIInfo(pessoaId: string, tiInfo: any) {
-    return this.httpClient.put<any>(`${this.API}/${pessoaId}/ti-info`, tiInfo);
+    return this.httpClient.put<any>(`${this.API}/${pessoaId}/ti-info`, tiInfo).pipe(first());
   }
-
 }
-
-
