@@ -1,0 +1,58 @@
+mat-card {
+  max-width: 90%;
+  padding: 10px;
+  margin: 2em auto;
+  align-content: center;
+
+}
+
+mat-toolbar {
+  max-width: 100%;
+  padding: 10px;
+}
+
+.container{
+  max-width: 100%;
+  padding: 20px;
+}
+
+.full-width{
+  width: 48%;
+  padding: 10px;
+}
+
+.metade-full-width{
+  width: 23%;
+  padding: 10px;
+
+
+}
+
+.metade-full-width-foto{
+  width: 48%;
+  padding: 10px;
+  text-align: center;
+
+}
+
+
+.min-width {
+  width: 100%;
+  min-width: 150px;
+}
+
+.buttons {
+  width: 100%;
+  padding-left: 45%;
+  padding-bottom: 30px;
+}
+
+button {
+  margin: 8px 8px 8px 0;
+}
+
+.label-radio {
+  padding: 10px;
+}
+
+

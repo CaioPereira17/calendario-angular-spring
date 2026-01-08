@@ -1,0 +1,89 @@
+<mat-card>
+  <mat-toolbar color="primary">Cadastro de Militares de OM's Subordinadas</mat-toolbar>
+  <div class="mat-elevation-z8">
+    <mat-card-content>
+      <div class="container">
+        <form [formGroup]="form" class="min-width">
+
+          <mat-form-field class="full-width">
+            <mat-label>Nome Completo</mat-label>
+            <input matInput placeholder="Ex: Gen Ex João da Silva" formControlName="nome">
+            @if (form.get('nome')?.invalid) {
+            <mat-error>Nome é obrigatório</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <mat-label>Nome de guerra</mat-label>
+            <input matInput placeholder="Nome de guerra" formControlName="nomeGuerra">
+            @if (form.get('nomeGuerra')?.invalid) {
+            <mat-error>{{errorMessage("nomeGuerra")}}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <mat-label>Posto ou Graduação</mat-label>
+            <mat-select formControlName="postoGraduacao">
+              <mat-option [value]="null">Selecione</mat-option>
+              @for (posto of postos; track posto) {
+              <mat-option [value]="posto.viewValue">
+                <img [src]="posto.imageUrl" alt="{{ posto.viewValue }}"
+                  style="width: 24px; height: 45px; margin-right: 8px;">
+                {{ posto.viewValue }}
+              </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <mat-label>OM / Assessoria</mat-label>
+            <mat-select formControlName="assessoria">
+              @for (assessoria of assessoriasPai; track assessoria) {
+              <mat-option [value]="assessoria">
+                {{ assessoria.sigla }}
+              </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <mat-label>Tipo de Acesso</mat-label>
+            <mat-select formControlName="tipoAcesso">
+              @for (tipoAcesso of tipoAcessos; track tipoAcesso) {
+              <mat-option [value]="tipoAcesso.viewValue">{{ tipoAcesso.viewValue }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <mat-label>Ramal</mat-label>
+            <input matInput placeholder="Ramal" formControlName="ramal" [imask]="{mask: '810 - 0000'}" />
+          </mat-form-field>
+
+          <mat-form-field class="metade-full-width-foto">
+            <mat-label>Foto (Opcional)</mat-label>
+            <input matInput placeholder="Foto" formControlName="caminho" readonly> @if (url) {
+            <img [src]="url" alt="Foto do militar" class="preview-img">
+            }
+            <br>
+            <input type="file" (change)="upload($event)">
+          </mat-form-field>
+
+          <div class="status-container">
+            <mat-label class="label-radio"><strong>Status no Ramal:</strong></mat-label>
+            <mat-radio-group formControlName="liberado">
+              <mat-radio-button [value]="true">Liberado</mat-radio-button>
+              <mat-radio-button [value]="false">Bloqueado</mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+        </form>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions class="buttons">
+      <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">Salvar Externo</button>
+      <button mat-raised-button (click)="onCancel()">Cancelar</button>
+    </mat-card-actions>
+  </div>
+</mat-card>
