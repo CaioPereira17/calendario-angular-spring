@@ -20,25 +20,49 @@
   color: #333;
 }
 
-/* 🔹 Imagem de Perfil */
-.img-profile {
-  width: 60px;                 /* Largura */
-  height: 60px;                /* Altura IGUAL à largura (obrigatório para ser círculo) */
+// /* 🔹 Imagem de Perfil */ Rendodo ok
+// .img-profile {
+//   width: 60px;                 /* Largura */
+//   height: 60px;                /* Altura IGUAL à largura (obrigatório para ser círculo) */
   
-  border-radius: 50%;          /* A mágica que transforma quadrado em círculo */
+//   border-radius: 50%;          /* A mágica que transforma quadrado em círculo */
 
-  object-fit:fill;           /* Corta o excesso da imagem sem esticar */
-  object-position: center;    /* Centraliza a imagem dentro do círculo */
+//   object-fit:fill;           /* Corta o excesso da imagem sem esticar */
+//   object-position: center;    /* Centraliza a imagem dentro do círculo */
   
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra para destacar */
-  border: 2px solid #287413e0;      /* Opcional: Borda branca fina para acabamento */
+//   box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra para destacar */
+//   border: 2px solid #287413e0;      /* Opcional: Borda branca fina para acabamento */
+  
+//   transition: transform 0.3s ease;
+// }
+
+// .img-profile:hover {
+//   transform: scale(1.1); /* Aumenta um pouquinho ao passar o mouse */
+// }
+
+/* 🔹 Imagem de Perfil Quadrada */
+.img-profile {
+  width: 60px;
+  height: 60px;
+  
+  /* 0% ou um valor baixo como 4px para cantos levemente arredondados */
+  border-radius: 4px; 
+
+  /* 'cover' garante que a foto preencha o quadrado sem ser esticada/achatada */
+  object-fit: cover; 
+  object-position: center;
+  
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  border: 2px solid #287413e0; 
   
   transition: transform 0.3s ease;
 }
 
 .img-profile:hover {
-  transform: scale(1.1); /* Aumenta um pouquinho ao passar o mouse */
+  transform: scale(1.1);
 }
+
+
 
 
 /* 🔹 Posto/Graduação */

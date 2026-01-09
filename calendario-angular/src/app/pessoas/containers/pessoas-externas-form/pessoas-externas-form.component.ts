@@ -127,66 +127,52 @@ export class PessoasExternasFormComponent implements OnInit {
   upload(event: any) {
     const file: File = event.target.files[0];
 
-    // Pegamos os valores atuais do formulário
     const nomePessoa = this.form.get('nome')?.value;
     const identidade = this.form.get('identidade')?.value;
 
     if (file) {
       let nomeArquivo = '';
 
-      // ESTRATÉGIA DE NOMEAÇÃO DO ARQUIVO:
-
       if (identidade) {
-        // 1. Cenário Ideal: Tem identidade
         nomeArquivo = `${identidade}.jpg`;
       }
-      else if (nomePessoa) {
-        // 2. Cenário Comum para Externos: Usa o Nome + Timestamp
-        // Exemplo: "Joao da Silva" vira "joaodasilva_170428999.jpg"
+      else {
+        // Lógica de Sanitização Segura
+        const baseNome = nomePessoa || 'externo';
 
-        // Remove acentos e espaços
-        const nomeLimpo = nomePessoa
+        const nomeLimpo = baseNome
           .toLowerCase()
-          .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Remove acentos
-          .replace(/\s+/g, ''); // Remove espaços
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "") // Remove acentos
+          .replace(/[^a-z0-9]/g, "");     // Remove 'ª', 'º', espaços e símbolos
 
-        // Adiciona timestamp para evitar que dois "Joao Silva" tenham a mesma foto
         const timestamp = new Date().getTime();
-
         nomeArquivo = `${nomeLimpo}_${timestamp}.jpg`;
       }
-      else {
-        // 3. Fallback: Usuário não digitou nem o nome ainda
-        nomeArquivo = `externo_${new Date().getTime()}.jpg`;
-      }
 
-      // Cria o novo arquivo com o nome gerado
       const renamedFile = new File([file], nomeArquivo, { type: 'image/jpeg' });
-
       const formData = new FormData();
       formData.append('file', renamedFile);
 
       this.mediaService.uploadFile(formData)
         .subscribe((response: any) => {
-          console.log('Upload concluído. URL:', response.url);
-
-          this.url = response.url; // Atualiza a visualização
-
-          // SALVA O CAMINHO NO FORMULÁRIO
-          // Isso é o mais importante: O banco vai guardar o link para esse arquivo,
-          // não importa qual nome ele tenha.
+          console.log('Upload ok:', response.url);
+          this.url = response.url;
           this.form.patchValue({ caminho: response.url });
         });
     }
   }
+
   onSubmit() {
     if (this.form.valid) {
-      // 1. Cria uma cópia dos dados do formulário
+      // 1. Clona os dados do formulário para não mexer na tela
       const dadosParaEnviar = { ...this.form.value };
 
-      // 2. Transforma String Vazia ('') em NULO (null)
-      // Isso faz o @Pattern do Java ignorar a validação
+      // 2. O TRUQUE: Transforma vazio ('') em NULL
+      // Se não fizer isso, o Java acha que '' é uma identidade inválida
       if (!dadosParaEnviar.identidade) dadosParaEnviar.identidade = null;
+
+      // Faça o mesmo para outros campos opcionais para garantir
       if (!dadosParaEnviar.nomeGuerra) dadosParaEnviar.nomeGuerra = null;
       if (!dadosParaEnviar.armaquadroservico) dadosParaEnviar.armaquadroservico = null;
       if (!dadosParaEnviar.ramal) dadosParaEnviar.ramal = null;
@@ -194,15 +180,25 @@ export class PessoasExternasFormComponent implements OnInit {
       if (!dadosParaEnviar.dt_praca) dadosParaEnviar.dt_praca = null;
       if (!dadosParaEnviar.dt_nascimento) dadosParaEnviar.dt_nascimento = null;
 
-      // Se não tiver foto, garante null também
+      // Foto também
       if (!dadosParaEnviar.caminho) dadosParaEnviar.caminho = null;
 
-      // 3. Envia os dados tratados
-      this.service.save(dadosParaEnviar)
-        .subscribe(
+      // 3. Envia (Create ou Update)
+      // Se tiver ID, é atualização. Se não, é novo.
+      if (this.form.value._id) {
+        // Lógica de Update (PUT)
+        this.service.save(dadosParaEnviar).subscribe(
           result => this.onSuccess(),
           error => this.onError()
         );
+      } else {
+        // Lógica de Create (POST)
+        this.service.save(dadosParaEnviar).subscribe(
+          result => this.onSuccess(),
+          error => this.onError()
+        );
+      }
+
     } else {
       this.form.markAllAsTouched();
     }
