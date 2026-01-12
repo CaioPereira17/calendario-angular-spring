@@ -5,7 +5,7 @@ mat-card {
 
 }
 
-.column-flex{
+.column-flex {
   display: flex;
   flex-direction: column;
   min-width: 600px;
@@ -28,7 +28,7 @@ mat-toolbar {
   justify-content: center;
 }
 
-.campo-pesquisa{
+.campo-pesquisa {
 
   width: 85%;
   margin-top: 30px;
@@ -47,14 +47,14 @@ mat-toolbar {
   align-items: center;
 }
 
-.input-pesquisa::placeholder{
+.input-pesquisa::placeholder {
   font-size: 15px;
   padding: 10px;
   margin: 10px;
 
 }
 
-.input-pesquisa{
+.input-pesquisa {
 
   width: 88%;
   height: 8%;
@@ -64,4 +64,9 @@ mat-toolbar {
 
 }
 
+.input-pesquisa-aniversario {
 
+  width: 20%;
+  margin: 10px;
+  align-items: center;
+}

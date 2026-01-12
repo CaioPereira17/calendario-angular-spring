@@ -73,7 +73,7 @@
         </a>
       </mat-list-item>
 
-      <mat-list-item *ngIf="isAdmin">
+      <mat-list-item *ngIf="isAdmin || isDivPess">
         <a class="menu-item" (click)="navigateTo('pessoas/externas/new')" routerLinkActive="active-link">
           <mat-icon class="menu-icon">save</mat-icon>
           <span class="menu-text">Militares de OM's sub.</span>

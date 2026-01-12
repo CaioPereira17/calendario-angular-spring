@@ -72,7 +72,7 @@
 //       width: '400px',
 //       data: pessoa
 //     });
-  
+
 //     dialogRef.afterClosed().subscribe(result => {
 //       if (result) {
 //         console.log("Pessoa atualizada:", result);
@@ -125,17 +125,19 @@ import { MatDialog } from '@angular/material/dialog';
 import { LoginService } from '../../../login/auth/login.service';
 import { PessoaDetalhesModalComponent } from '../pessoa-detalhes-modal/pessoa-detalhes-modal.component';
 
+import { Router, ActivatedRoute } from '@angular/router';
+
 @Component({
-    selector: 'app-pessoas-lista',
-    templateUrl: './pessoas-lista.component.html',
-    styleUrl: './pessoas-lista.component.scss',
-    standalone: true,
-    imports: [MatCard, MatTable, MatColumnDef,
-              MatHeaderCellDef, MatHeaderCell,
-              MatCellDef, MatCell, MatIcon,
-              MatIconButton, MatHeaderRowDef,
-              MatHeaderRow, MatRowDef, MatRow, CommonModule
-             ]
+  selector: 'app-pessoas-lista',
+  templateUrl: './pessoas-lista.component.html',
+  styleUrl: './pessoas-lista.component.scss',
+  standalone: true,
+  imports: [MatCard, MatTable, MatColumnDef,
+    MatHeaderCellDef, MatHeaderCell,
+    MatCellDef, MatCell, MatIcon,
+    MatIconButton, MatHeaderRowDef,
+    MatHeaderRow, MatRowDef, MatRow, CommonModule
+  ]
 })
 export class PessoasListaComponent implements OnInit {
 
@@ -150,21 +152,19 @@ export class PessoasListaComponent implements OnInit {
   acessos = TipoAcessoList;
   selectedAcesso: TipoAcesso | undefined;
 
-  // --- MUDANÇA 1: A variável foi restaurada e inicializada ---
-  // Esta variável agora pode ser usada em todo o seu template HTML
   userHasPermission: boolean = false;
 
-  // A lista de colunas começa sem 'identidade'
   displayedColumns = ['caminho', 'nome', 'postoGraduacao', 'nomeGuerra', 'assessoria', 'ramal', 'acoes'];
 
   constructor(
     private dialog: MatDialog,
-    private loginService: LoginService
-  ) {}
+    private loginService: LoginService,
+    // --- CORREÇÃO AQUI: Injeção do Router e ActivatedRoute ---
+    private router: Router,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
-    // --- MUDANÇA 2: A lógica foi consolidada no ngOnInit ---
-
     // 1. Calcula a permissão e armazena na variável da classe
     this.userHasPermission =
       this.loginService.hasPermission('TI') ||
@@ -202,7 +202,20 @@ export class PessoasListaComponent implements OnInit {
   }
 
   onEdit(pessoa: Pessoa) {
-    this.edit.emit(pessoa);
+    // Lógica de decisão: Se não tem identidade, consideramos externo
+    if (this.isMilitarExterno(pessoa)) {
+      // Navega para a rota do formulário simplificado
+      this.router.navigate(['externas/edit', pessoa._id], { relativeTo: this.route });
+    } else {
+      // Navega para a rota padrão (militar da casa)
+      this.router.navigate(['edit', pessoa._id], { relativeTo: this.route });
+    }
+  }
+
+  // Função auxiliar para verificar o perfil
+  private isMilitarExterno(pessoa: Pessoa): boolean {
+    // Se identidade for nula, vazia ou undefined, é externo
+    return !pessoa.identidade || pessoa.identidade.trim() === '';
   }
 
   onDelete(pessoa: Pessoa) {

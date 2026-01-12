@@ -59,7 +59,8 @@
 
           <mat-form-field class="full-width">
             <mat-label>Assessoria</mat-label>
-            <mat-select formControlName="assessoria" (selectionChange)="onAssessoriaChange($event.value)">
+            <!-- <mat-select formControlName="assessoria" (selectionChange)="onAssessoriaChange($event.value)"> -->
+            <mat-select formControlName="assessoria" [compareWith]="compareAssessoria" (selectionChange)="onAssessoriaChange($event.value)">
               @for (assessoria of assessoriasPai; track assessoria) {
               <mat-option [value]="assessoria">
                 {{ assessoria.sigla }}
