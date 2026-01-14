@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import br.mil.eb.decex.calendario_spring.modelo.Pessoa;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -47,6 +48,22 @@ public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
             @Param("termo") String termo,
             @Param("mesNascimento") Integer mesNascimento,
             Pageable pageable
+    );
+    //Buscar todos para relatório (ajuste conforme sua query atual de listagem)
+    @Query("SELECT p FROM Pessoa p " +
+            "WHERE (:termo IS NULL OR :termo = '' OR LOWER(p.nome) LIKE LOWER(CONCAT('%', :termo, '%')) OR LOWER(p.nomeGuerra) LIKE LOWER(CONCAT('%', :termo, '%'))) " +
+            "AND (:mes IS NULL OR MONTH(p.dtNascimento) = :mes) " +
+
+            // --- CORREÇÃO AQUI ---
+            // Mudamos de '=' para 'LIKE ... %'
+            // Assim, se filtrar "DTI", ele pega "DTI", "DTI-REDES", "DTI-MNT", etc.
+            "AND (:assessoria IS NULL OR :assessoria = '' OR p.assessoria.sigla LIKE CONCAT(:assessoria, '%')) " +
+
+            "ORDER BY p.postoGraduacaoOrdinal ASC, p.nomeGuerra ASC")
+    List<Pessoa> findForRelatorio(
+            @Param("termo") String termo,
+            @Param("mes") Integer mes,
+            @Param("assessoria") String assessoria
     );
 
 

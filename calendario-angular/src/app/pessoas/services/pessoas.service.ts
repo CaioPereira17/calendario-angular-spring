@@ -88,4 +88,20 @@ export class PessoasService {
   updatePessoaTIInfo(pessoaId: string, tiInfo: any) {
     return this.httpClient.put<any>(`${this.API}/${pessoaId}/ti-info`, tiInfo).pipe(first());
   }
+
+  exportarPdf(termo: string, assessoria: string, mes: number | ''): Observable<Blob> {
+    let params = new HttpParams()
+      .set('termo', termo)
+      .set('assessoria', assessoria)
+      
+    if (mes) {
+      params = params.set('mesNascimento', mes.toString());
+    }
+
+    // responseType: 'blob' é fundamental para baixar arquivos
+    return this.httpClient.get(`${this.API}/exportar`, { 
+      params: params, 
+      responseType: 'blob' 
+    });
+  }
 }

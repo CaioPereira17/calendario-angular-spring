@@ -23,7 +23,8 @@
 
       <mat-form-field class="input-pesquisa-assessoria">
         <mat-label>Pesquise pela Assessoria</mat-label>
-        <mat-select (selectionChange)="onSearchTermChange($event.value)">
+        <!-- <mat-select (selectionChange)="onSearchTermChange($event.value)"> -->
+        <mat-select (selectionChange)="onAssessoriaFilterChange($event.value)">
 
           <input class="input-pesquisa" (input)="filterSelectDeAssessorias($event)"
             placeholder="Digite ou selecione para filtrar" />
@@ -55,6 +56,10 @@
       </mat-form-field>
 
     </div>
+
+    <button mat-mini-fab color="accent" (click)="exportarPdf()" matTooltip="Exportar lista atual para PDF">
+      <mat-icon>picture_as_pdf</mat-icon>
+    </button>
 
   </mat-toolbar>
 

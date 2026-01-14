@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
 @Service
 public class PessoaService {
 
-
     private final PessoaRepository pessoaRepository;
     private final PessoaMapper pessoaMapper;
 
@@ -45,7 +44,6 @@ public class PessoaService {
 
     public Pessoa salvarPessoaComTIInfo(Pessoa pessoa, PessoaTIInfo tiInfo) {
         pessoa = pessoaRepository.save(pessoa);
-
         if (tiInfo != null) {
             tiInfo.setPessoa(pessoa);
             pessoaTIInfoRepository.save(tiInfo);
@@ -88,6 +86,11 @@ public class PessoaService {
         if (caminho == null || caminho.isEmpty()) {
             return "http://localhost:8080/media/branco.jpg";
         }
+        // Se já é uma URL completa, retorna ela mesma
+        if (caminho.startsWith("http")) {
+            return caminho;
+        }
+
         String nomeArquivo = caminho.substring(caminho.lastIndexOf("/") + 1);
         Path caminhoImagem = Paths.get(basePath + nomeArquivo);
 
@@ -103,21 +106,32 @@ public class PessoaService {
                 .collect(Collectors.toList());
     }
 
-    // Responsável por organizar a hieraquia e aniversariantes do mês
-    public PessoaPageDTO search(String termo, @PositiveOrZero int page, @Positive @Max(100) int pageSize, Integer mesNascimento) {
+    public List<Pessoa> listarParaRelatorio(String termo, String assessoria, Integer mes) {
+        // Log para debug
+        System.out.println("---- GERANDO RELATÓRIO ----");
+        System.out.println("Termo: '" + termo + "'");
+        System.out.println("Assessoria: '" + assessoria + "'");
+        System.out.println("Mes: " + mes);
 
-        // ORDENAÇÃO DE ANTIGUIDADE MILITAR COMPLETA:
+        if (termo == null) termo = "";
+        if (assessoria == null) assessoria = "";
+
+        List<Pessoa> resultado = pessoaRepository.findForRelatorio(termo, mes, assessoria);
+        System.out.println("Registros encontrados: " + resultado.size());
+
+        return resultado;
+    }
+
+    public PessoaPageDTO search(String termo, @PositiveOrZero int page, @Positive @Max(100) int pageSize, Integer mesNascimento) {
         Sort sort = Sort.by(
-                Sort.Order.asc("postoGraduacaoOrdinal"), // 1. Hierarquia
-                Sort.Order.asc("dataUltimaPromocao"),    // 2. Antiguidade no posto
-                Sort.Order.asc("dtPraca"),               // 3. Tempo de serviço
-                Sort.Order.asc("dtNascimento"),          // 4. Idade
-                Sort.Order.asc("nome")                   // 5. Ordem Alfabética
+                Sort.Order.asc("postoGraduacaoOrdinal"),
+                Sort.Order.asc("dataUltimaPromocao"),
+                Sort.Order.asc("dtPraca"),
+                Sort.Order.asc("dtNascimento"),
+                Sort.Order.asc("nome")
         );
 
         Pageable pageable = PageRequest.of(page, pageSize, sort);
-
-        // Chama o método novo do repositório que sabe filtrar por Mês + Texto
         Page<Pessoa> pagePessoa = pessoaRepository.buscarPorNomeOuAssessoriaEMes(termo, mesNascimento, pageable);
 
         List<PessoaDTO> pessoas = pagePessoa.get().map(pessoa -> {

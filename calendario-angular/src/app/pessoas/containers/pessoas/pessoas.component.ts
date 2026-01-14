@@ -1,31 +1,36 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { AsyncPipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, Observable, of, tap } from 'rxjs';
+import { UntypedFormGroup } from '@angular/forms';
 
-import { ErrorDialogComponent } from '../../../shared/components/error-dialog/error-dialog.component';
-import { Pessoa } from '../../model/pessoa';
-import { PessoasService } from '../../services/pessoas.service';
-
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ConfimationDialogComponent } from '../../../shared/components/error-dialog/confimation-dialog/confimation-dialog.component';
-import { PessoaPage } from '../../model/pessoa-page';
+// Material Imports
+import { MatCard } from '@angular/material/card';
+import { MatToolbar } from '@angular/material/toolbar';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { PessoasListaComponent } from '../../components/pessoas-lista/pessoas-lista.component';
-import { AsyncPipe } from '@angular/common';
-import { MatToolbar } from '@angular/material/toolbar';
-import { MatCard } from '@angular/material/card';
-import { MatTableDataSource } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { PostoGraduacaoList } from '../../../enums/PostoGraduacao/PostoGraduacao';
 import { MatSelectModule } from '@angular/material/select';
-import { UntypedFormGroup } from '@angular/forms';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+// RxJS
+import { catchError, Observable, of, tap } from 'rxjs';
+
+// Application Imports
+import { PessoasListaComponent } from '../../components/pessoas-lista/pessoas-lista.component';
+import { PessoasService } from '../../services/pessoas.service';
 import { AssessoriasService } from '../../../assessorias/services/assessorias.service';
+import { Pessoa } from '../../model/pessoa';
+import { PessoaPage } from '../../model/pessoa-page';
 import { Assessoria } from '../../../assessorias/model/assessoria';
-
-
+import { PostoGraduacaoList } from '../../../enums/PostoGraduacao/PostoGraduacao';
+import { ErrorDialogComponent } from '../../../shared/components/error-dialog/error-dialog.component';
+import { ConfimationDialogComponent } from '../../../shared/components/error-dialog/confimation-dialog/confimation-dialog.component';
 
 @Component({
   selector: 'app-pessoas',
@@ -41,31 +46,33 @@ import { Assessoria } from '../../../assessorias/model/assessoria';
     AsyncPipe,
     MatFormFieldModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTooltipModule
   ]
 })
 export class PessoasComponent implements OnInit {
 
+  // --- VIEW CHILDREN & INPUTS ---
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @Input() dataSource = new MatTableDataSource<Pessoa>();
 
-  // Paginação e Dados da Tabela
+  // --- ESTADO DA PAGINAÇÃO ---
   pageIndex = 0;
   pageSize = 10;
   pessoas$: Observable<PessoaPage> | null = null;
-  @Input() dataSource = new MatTableDataSource<Pessoa>();
 
-  // Listas Auxiliares (Para Selects de busca interna)
+  // --- DADOS AUXILIARES (Listas para Selects) ---
   postos = PostoGraduacaoList;
+  
+  // Listas locais para filtragem no front (Selects)
   pessoas: Pessoa[] = [];
   pessoasOriginais: Pessoa[] = [];
+  
   assessorias: Assessoria[] = [];
   assessoriasOriginais: Assessoria[] = [];
 
-  // Filtros Atuais
-  filtroTexto: string = '';
-  filtroMes: number | '' = '';
-
-  // Lista de Meses para o Filtro
   listaMeses = [
     { nome: 'Janeiro', valor: 1 }, { nome: 'Fevereiro', valor: 2 },
     { nome: 'Março', valor: 3 }, { nome: 'Abril', valor: 4 },
@@ -75,43 +82,40 @@ export class PessoasComponent implements OnInit {
     { nome: 'Novembro', valor: 11 }, { nome: 'Dezembro', valor: 12 }
   ];
 
+  // --- FILTROS ATIVOS ---
+  filtroTexto: string = '';
+  filtroAssessoria: string = '';
+  filtroMes: number | '' = '';
+
   constructor(
     private readonly pessoasService: PessoasService,
     private readonly assessoriasService: AssessoriasService,
-    public dialog: MatDialog,
+    private readonly dialog: MatDialog,
     private readonly router: Router,
     private readonly snackBar: MatSnackBar,
     private readonly route: ActivatedRoute,
-  ) {
-    // Construtor limpo. A lógica vai para o ngOnInit.
-  }
+  ) {}
 
   ngOnInit(): void {
-    // 1. Carrega a tabela principal
     this.refresh();
-
-    // 2. Carrega as listas auxiliares para os dropdowns
     this.carregarListasAuxiliares();
   }
 
-  // --- CARREGAMENTO DE DADOS ---
+  // ============================================================
+  // CARREGAMENTO DE DADOS (BACKEND)
+  // ============================================================
 
   refresh(pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 }) {
-    // Atualiza variaveis locais de paginação
     this.pageIndex = pageEvent.pageIndex;
     this.pageSize = pageEvent.pageSize;
 
-    // Chama o serviço passando: Texto, Paginação E O MÊS
-    // OBS: Você precisará atualizar o método .list() no PessoasService
     this.pessoas$ = this.pessoasService.list(
       this.filtroTexto,
       this.pageIndex,
       this.pageSize,
-      this.filtroMes // <--- Novo parâmetro enviado ao back
+      this.filtroMes
     ).pipe(
-      tap(() => {
-        // Sucesso
-      }),
+      tap(() => { /* Sucesso */ }),
       catchError(error => {
         this.onError('Erro ao carregar pessoas');
         return of({ content: [], pessoas: [], totalElements: 0, totalPages: 0 });
@@ -119,49 +123,61 @@ export class PessoasComponent implements OnInit {
     );
   }
 
-
-
   carregarListasAuxiliares() {
+    // Carrega lista completa para o AutoComplete/Select de Pessoas
     this.pessoasService.listPessCompl().subscribe((data: Pessoa[]) => {
       this.pessoas = data;
       this.pessoasOriginais = [...data];
     });
 
+    // Carrega lista completa para o AutoComplete/Select de Assessorias
     this.assessoriasService.list().subscribe((data: Assessoria[]) => {
       this.assessorias = data;
       this.assessoriasOriginais = [...data];
     });
   }
 
-  // --- EVENTOS DE FILTRO DA TABELA PRINCIPAL ---
+  // ============================================================
+  // GERENCIAMENTO DE EVENTOS DE FILTRO (TABELA)
+  // ============================================================
 
   onSearchTermChange(value: string): void {
-    this.filtroTexto = value; // Guarda o estado
-    // Reseta para a primeira página ao filtrar
+    this.filtroTexto = value;
     this.refresh({ length: 0, pageIndex: 0, pageSize: this.pageSize });
   }
 
-onAniversarianteChange(mes: number | ''): void {
+  onAssessoriaFilterChange(value: string): void {
+    this.filtroAssessoria = value;
+    
+    // Filtro visual no Select
+    const inputElement = { target: { value: value } } as any;
+    this.filterSelectDeAssessorias(inputElement);
+    
+    // Atualiza filtro principal e recarrega
+    // Nota: Se o backend aceitar 'assessoria' separado, mude aqui. 
+    // Por enquanto, usa o filtroTexto conforme sua lógica atual.
+    this.filtroTexto = value; 
+    this.refresh({ length: 0, pageIndex: 0, pageSize: this.pageSize });
+  }
+
+  onAniversarianteChange(mes: number | ''): void {
     this.filtroMes = mes;
 
+    // Ajusta tamanho da página se for filtro de aniversário
     if (mes) {
-      // Se tem mês, força visualização expandida
-      this.pageSize = 10;
+      this.pageSize = 100;
       this.pageIndex = 0;
     } else {
-      // Se limpou, volta ao padrão
       this.pageSize = 10;
       this.pageIndex = 0;
     }
 
-    // --- CORREÇÃO AQUI ---
-    // Força o componente visual do paginator a saber que o tamanho mudou
+    // Sincroniza visual do paginator
     if (this.paginator) {
       this.paginator.pageSize = this.pageSize;
       this.paginator.pageIndex = this.pageIndex;
     }
 
-    // Chama o refresh
     this.refresh({ length: 0, pageIndex: this.pageIndex, pageSize: this.pageSize });
   }
 
@@ -169,12 +185,15 @@ onAniversarianteChange(mes: number | ''): void {
     this.refresh(event);
   }
 
-  // --- FILTROS DE CLIENTE (DENTRO DOS SELECTS) ---
+  // ============================================================
+  // FILTROS VISUAIS (CLIENT-SIDE PARA OS SELECTS)
+  // ============================================================
 
   filterSelectDePessoas(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     const value = inputElement.value;
-    if (value.trim() === '') {
+    
+    if (!value) {
       this.pessoas = [...this.pessoasOriginais];
     } else {
       this.pessoas = this.pessoasOriginais.filter(pessoa =>
@@ -184,9 +203,11 @@ onAniversarianteChange(mes: number | ''): void {
   }
 
   filterSelectDeAssessorias(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    const value = inputElement.value;
-    if (value.trim() === '') {
+    // Nota: event pode vir como objeto mockado do onAssessoriaFilterChange ou evento real do DOM
+    const target = event.target as HTMLInputElement | null;
+    const value = target ? target.value : '';
+
+    if (!value || value.trim() === '') {
       this.assessorias = [...this.assessoriasOriginais];
     } else {
       this.assessorias = this.assessoriasOriginais.filter(assessoria =>
@@ -195,7 +216,32 @@ onAniversarianteChange(mes: number | ''): void {
     }
   }
 
-  // --- AÇÕES DO CRUD ---
+  // ============================================================
+  // AÇÕES (CRUD E EXPORTAÇÃO)
+  // ============================================================
+
+  exportarPdf() {
+    this.snackBar.open('Gerando PDF...', 'Aguarde', { duration: 2000 });
+
+    const termoParaPdf = this.filtroAssessoria ? '' : this.filtroTexto;
+    this.pessoasService.exportarPdf(termoParaPdf, this.filtroAssessoria, this.filtroMes)
+      .subscribe({
+        next: (data: Blob) => {
+          const fileURL = URL.createObjectURL(data);
+          const a = document.createElement('a');
+          a.href = fileURL;
+          a.download = `relatorio_ramais_${new Date().getTime()}.pdf`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(fileURL);
+        },
+        error: (error) => {
+          console.error(error);
+          this.onError('Erro ao gerar o relatório PDF.');
+        }
+      });
+  }
 
   onAdd() {
     this.router.navigate(['new'], { relativeTo: this.route });
@@ -229,9 +275,11 @@ onAniversarianteChange(mes: number | ''): void {
     });
   }
 
+  // ============================================================
+  // UTILITÁRIOS
+  // ============================================================
+
   onError(errorMsg: string) {
-    this.dialog.open(ErrorDialogComponent, {
-      data: errorMsg
-    });
+    this.dialog.open(ErrorDialogComponent, { data: errorMsg });
   }
 }
