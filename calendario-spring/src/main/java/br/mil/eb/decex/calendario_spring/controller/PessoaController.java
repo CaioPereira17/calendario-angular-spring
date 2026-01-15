@@ -92,12 +92,15 @@ public class PessoaController {
     @GetMapping("/search")
     public PessoaPageDTO search(
             @RequestParam(required = false) String termo,
+            @RequestParam(required = false) String assessoria, // <--- New Parameter
             @RequestParam(defaultValue = "0") @PositiveOrZero int page,
             @RequestParam(defaultValue = "10") @Positive @Max(100) int pageSize,
             @RequestParam(required = false) Integer mesNascimento
     ) {
-        return pessoaService.search(termo, page, pageSize, mesNascimento);
+        // Pass assessoria explicitly to the service
+        return pessoaService.search(termo, assessoria, page, pageSize, mesNascimento);
     }
+
 
     @GetMapping("/inativas")
     public PessoaPageDTO listarPessoasInativas(

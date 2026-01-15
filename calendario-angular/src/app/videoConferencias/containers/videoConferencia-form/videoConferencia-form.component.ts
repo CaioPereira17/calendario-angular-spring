@@ -107,7 +107,7 @@ export class VideoConferenciaFormComponent implements OnInit {
     if (username) {
       console.log('Buscando dados para o usuário:', username);
       
-      this.pessoasService.list(username, 0, 1).subscribe({
+      this.pessoasService.list(username,'', 0, 1).subscribe({
         next: (page: any) => {
            if (page.pessoas && page.pessoas.length > 0) {
                this.pessoaLogada = page.pessoas[0];

@@ -113,7 +113,10 @@ export class PessoasFormComponent implements OnInit {
       assessoria: [null, Validators.required],
       assessoriaFilha: [null],
       liberado: ['', Validators.required],
-      ramal: ['', [Validators.required, Validators.pattern('^810 - \\d{4}$')]],
+      // Aceita números, espaços e traços (ex: "810 5000", "2519-1234", "3000")
+      ramal: ['', [Validators.required, Validators.pattern('^[0-9\\- ]+$')]],
+      //aceita apenas formato de ramal 810 - 1234
+      // ramal: ['', [Validators.required, Validators.pattern('^810 - \\d{4}$')]],
       caminho: ['', Validators.required]
 
     });

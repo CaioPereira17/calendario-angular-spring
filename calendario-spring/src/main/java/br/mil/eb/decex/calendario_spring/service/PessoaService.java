@@ -122,7 +122,7 @@ public class PessoaService {
         return resultado;
     }
 
-    public PessoaPageDTO search(String termo, @PositiveOrZero int page, @Positive @Max(100) int pageSize, Integer mesNascimento) {
+    public PessoaPageDTO search(String termo, String assessoria, @PositiveOrZero int page, @Positive @Max(100) int pageSize, Integer mesNascimento) {
         Sort sort = Sort.by(
                 Sort.Order.asc("postoGraduacaoOrdinal"),
                 Sort.Order.asc("dataUltimaPromocao"),
@@ -132,7 +132,7 @@ public class PessoaService {
         );
 
         Pageable pageable = PageRequest.of(page, pageSize, sort);
-        Page<Pessoa> pagePessoa = pessoaRepository.buscarPorNomeOuAssessoriaEMes(termo, mesNascimento, pageable);
+        Page<Pessoa> pagePessoa = pessoaRepository.buscarPorNomeOuAssessoriaEMes(termo, assessoria, mesNascimento, pageable);
 
         List<PessoaDTO> pessoas = pagePessoa.get().map(pessoa -> {
             PessoaDTO pessoaDTO = pessoaMapper.toDTO(pessoa);

@@ -22,7 +22,7 @@ export class PessoasService {
   /**
    * Método unificado de listagem com paginação e filtros (termo e mês)
    */
-  list(termo: string = '', page: number = 0, pageSize: number = 10, mesAniversario: number | '' = ''): Observable<PessoaPage> {
+  list(termo: string = '', assessoria: string = '', page: number = 0, pageSize: number = 10, mesAniversario: number | '' = ''): Observable<PessoaPage> {
 
     let params = new HttpParams()
       .set('page', page.toString())
@@ -32,6 +32,10 @@ export class PessoasService {
     if (mesAniversario) {
       params = params.set('mesNascimento', mesAniversario.toString());
     }
+    if (termo) params = params.set('termo', termo);
+    if (assessoria) params = params.set('assessoria', assessoria); // Add this
+
+
 
     return this.httpClient.get<PessoaPage>(this.APIPESQ, { params }).pipe(first());
   }

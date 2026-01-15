@@ -60,7 +60,8 @@
           <mat-form-field class="full-width">
             <mat-label>Assessoria</mat-label>
             <!-- <mat-select formControlName="assessoria" (selectionChange)="onAssessoriaChange($event.value)"> -->
-            <mat-select formControlName="assessoria" [compareWith]="compareAssessoria" (selectionChange)="onAssessoriaChange($event.value)">
+            <mat-select formControlName="assessoria" [compareWith]="compareAssessoria"
+              (selectionChange)="onAssessoriaChange($event.value)">
               @for (assessoria of assessoriasPai; track assessoria) {
               <mat-option [value]="assessoria">
                 {{ assessoria.sigla }}
@@ -123,13 +124,23 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field class="full-width">
+          <!-- <mat-form-field class="full-width">
             <mat-label>Ramal</mat-label>
             <input matInput placeholder="Ramal" formControlName="ramal" [imask]="{mask: '810 - 0000'}" />
             @if (form.get('ramal')?.invalid) {
             <mat-error>{{errorMessage("ramal")}}</mat-error>
             }
+          </mat-form-field> -->
+          <mat-form-field class="full-width">
+            <mat-label>Ramal</mat-label>
+            <input matInput placeholder="Ex: 810-1234 ou 2519-5000" formControlName="ramal" />
+
+            @if (form.get('ramal')?.invalid) {
+            <mat-error>{{errorMessage("ramal")}}</mat-error>
+            }
           </mat-form-field>
+
+
 
           <mat-form-field class="metade-full-width-foto">
             <mat-label>Foto</mat-label>

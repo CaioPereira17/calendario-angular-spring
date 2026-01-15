@@ -105,23 +105,27 @@ export class PessoasComponent implements OnInit {
   // CARREGAMENTO DE DADOS (BACKEND)
   // ============================================================
 
+  // 1. Update refresh to pass separate parameters
   refresh(pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 }) {
     this.pageIndex = pageEvent.pageIndex;
     this.pageSize = pageEvent.pageSize;
 
+    // Call service with distinct parameters
     this.pessoas$ = this.pessoasService.list(
-      this.filtroTexto,
+      this.filtroTexto,       // Name search only
+      this.filtroAssessoria,  // Assessoria search only
       this.pageIndex,
       this.pageSize,
       this.filtroMes
     ).pipe(
-      tap(() => { /* Sucesso */ }),
+      tap(() => { /* Success */ }),
       catchError(error => {
         this.onError('Erro ao carregar pessoas');
         return of({ content: [], pessoas: [], totalElements: 0, totalPages: 0 });
       })
     );
   }
+
 
   carregarListasAuxiliares() {
     // Carrega lista completa para o AutoComplete/Select de Pessoas
@@ -146,19 +150,17 @@ export class PessoasComponent implements OnInit {
     this.refresh({ length: 0, pageIndex: 0, pageSize: this.pageSize });
   }
 
+  // 2. Fix the event handler
   onAssessoriaFilterChange(value: string): void {
     this.filtroAssessoria = value;
     
-    // Filtro visual no Select
     const inputElement = { target: { value: value } } as any;
     this.filterSelectDeAssessorias(inputElement);
     
-    // Atualiza filtro principal e recarrega
-    // Nota: Se o backend aceitar 'assessoria' separado, mude aqui. 
-    // Por enquanto, usa o filtroTexto conforme sua lógica atual.
-    this.filtroTexto = value; 
+    // Refresh the table
     this.refresh({ length: 0, pageIndex: 0, pageSize: this.pageSize });
   }
+
 
   onAniversarianteChange(mes: number | ''): void {
     this.filtroMes = mes;
