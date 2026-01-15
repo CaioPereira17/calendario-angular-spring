@@ -15,18 +15,18 @@ import { PostoGraduacao, PostoGraduacaoList } from '../../../enums/PostoGraduaca
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UsuariosService } from '../../../usuarios/services/usuarios.service';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pessoas-inativas',
   templateUrl: './pessoas-inativas.component.html',
   styleUrls: ['./pessoas-inativas.component.scss'],
   standalone: true,
-      imports: [MatCard, MatToolbar, PessoasListaComponent,
-                MatPaginator, MatTableModule, MatProgressSpinner,
-                AsyncPipe, MatFormFieldModule, MatInputModule, MatSelectModule,
-                CommonModule, MatTableModule, MatPaginatorModule, MatButtonModule,
-                MatCardModule, MatToolbarModule  ]
+  imports: [MatCard, MatToolbar,
+    MatPaginator, MatTableModule,
+    MatFormFieldModule, MatInputModule, MatSelectModule,
+    CommonModule, MatTableModule, MatPaginatorModule, MatButtonModule,
+    MatCardModule, MatToolbarModule]
 })
 export class PessoasInativasComponent implements OnInit {
   pessoasInativas: Pessoa[] = [];
@@ -39,26 +39,26 @@ export class PessoasInativasComponent implements OnInit {
 
 
   postos = PostoGraduacaoList;
-   selectedPosto = PostoGraduacao.GEN_EXERCITO;
+  selectedPosto = PostoGraduacao.GEN_EXERCITO;
 
-  constructor(private snackBar: MatSnackBar, private pessoasService: PessoasService, private router: Router, private usuariosService: UsuariosService) {}
+  constructor(private snackBar: MatSnackBar, private pessoasService: PessoasService, private router: Router, private usuariosService: UsuariosService) { }
 
- ngOnInit(): void {
-  this.usuariosService.userIsLogged().subscribe({
-    next: (isLogged) => {
-      if (!isLogged) {
+  ngOnInit(): void {
+    this.usuariosService.userIsLogged().subscribe({
+      next: (isLogged) => {
+        if (!isLogged) {
+          this.router.navigate(['/']);
+          return;
+        }
+        this.carregarPessoasInativas();
+      },
+      error: (err) => {
+        console.error('Erro ao verificar login:', err);
         this.router.navigate(['/']);
-        return;
       }
-      this.carregarPessoasInativas();
-    },
-    error: (err) => {
-      console.error('Erro ao verificar login:', err);
-      this.router.navigate(['/']);
-    }
-  });
-}
-    
+    });
+  }
+
 
   carregarPessoasInativas(): void {
     this.pessoasService.listarInativas(this.pageIndex, this.pageSize).subscribe({
@@ -79,20 +79,20 @@ export class PessoasInativasComponent implements OnInit {
 
     this.pessoasService.reativarPessoa(id).subscribe({
       next: () => {
-         this.snackBar.open(`✅ Pessoa reativada com sucesso!`, 'Fechar', {
-        duration: 4000,
-        panelClass: ['error-snackbar']
-      });
+        this.snackBar.open(`✅ Pessoa reativada com sucesso!`, 'Fechar', {
+          duration: 4000,
+          panelClass: ['error-snackbar']
+        });
         this.carregarPessoasInativas(); // Recarrega a lista após reativação
       },
-      error: (err) => { 
+      error: (err) => {
         console.error('Erro ao reativar pessoa:', err);
-            this.errorMessage = err.message ='U R NOT ADMIN';
-            this.snackBar.open(`❌ Erro: ${this.errorMessage}`, 'Fechar', {
-        duration: 4000,
-        panelClass: ['error-snackbar']
-      });
-          }
+        this.errorMessage = err.message = 'U R NOT ADMIN';
+        this.snackBar.open(`❌ Erro: ${this.errorMessage}`, 'Fechar', {
+          duration: 4000,
+          panelClass: ['error-snackbar']
+        });
+      }
     });
   }
 
@@ -104,7 +104,7 @@ export class PessoasInativasComponent implements OnInit {
   }
 
   getPostoImage(postoGraduacao: string): string {
-      const posto = PostoGraduacaoList.find(p => p.viewValue === postoGraduacao);
-      return posto ? posto.imageUrl : '';
-    }
+    const posto = PostoGraduacaoList.find(p => p.viewValue === postoGraduacao);
+    return posto ? posto.imageUrl : '';
+  }
 }

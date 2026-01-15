@@ -19,7 +19,7 @@ import { IMaskDirective } from 'angular-imask';
   templateUrl: './change-password.component.html',
   styleUrl: './change-password.component.scss',
   standalone: true,
-    imports: [ MatFormFieldModule, MatInputModule, MatDialogModule, ReactiveFormsModule, CommonModule, MatCard, MatToolbar, MatCardContent, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, IMaskDirective, MatError, MatSelect, MatOption, MatRadioGroup, MatRadioButton, MatCardActions, MatButton]
+    imports: [ MatFormFieldModule, MatInputModule, MatDialogModule, ReactiveFormsModule, CommonModule, FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput,MatButton]
 })
 export class ChangePasswordComponent {
 
