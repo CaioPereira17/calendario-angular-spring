@@ -20,35 +20,13 @@
   color: #333;
 }
 
-// /* 🔹 Imagem de Perfil */ Rendodo ok
-// .img-profile {
-//   width: 60px;                 /* Largura */
-//   height: 60px;                /* Altura IGUAL à largura (obrigatório para ser círculo) */
-  
-//   border-radius: 50%;          /* A mágica que transforma quadrado em círculo */
-
-//   object-fit:fill;           /* Corta o excesso da imagem sem esticar */
-//   object-position: center;    /* Centraliza a imagem dentro do círculo */
-  
-//   box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Sombra para destacar */
-//   border: 2px solid #287413e0;      /* Opcional: Borda branca fina para acabamento */
-  
-//   transition: transform 0.3s ease;
-// }
-
-// .img-profile:hover {
-//   transform: scale(1.1); /* Aumenta um pouquinho ao passar o mouse */
-// }
-
 /* 🔹 Imagem de Perfil Quadrada */
 .img-profile {
-  width: 60px;
-  height: 60px;
+  width: 90px;   /* Antes era 60px */
+  height: 90px;  /* Antes era 60px - Mantenha igual à largura para ser quadrado */
   
-  /* 0% ou um valor baixo como 4px para cantos levemente arredondados */
-  border-radius: 4px; 
+  border-radius: 6px; /* Aumentei um pouco o arredondamento para combinar com o tamanho novo */
 
-  /* 'cover' garante que a foto preencha o quadrado sem ser esticada/achatada */
   object-fit: cover; 
   object-position: center;
   
@@ -57,12 +35,9 @@
   
   transition: transform 0.3s ease;
 }
-
 .img-profile:hover {
-  transform: scale(1.1);
+  transform: scale(1.05); /* Aumenta um pouquinho ao passar o mouse */
 }
-
-
 
 
 /* 🔹 Posto/Graduação */
@@ -113,7 +88,7 @@
   }
 
   .img-profile {
-    width: 40px;
-    height: 40px;
+    width: 60px;  /* Aumentei no celular também (era 40px) */
+    height: 60px;
   }
 }
