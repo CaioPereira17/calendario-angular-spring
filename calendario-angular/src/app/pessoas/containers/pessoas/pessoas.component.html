@@ -1,89 +1,81 @@
 <mat-card>
-  <mat-toolbar color="primary">Ramais do DECEx
+  <mat-toolbar color="primary" class="toolbar-responsiva">
+    
+    <div class="toolbar-content">
+      <span class="titulo-toolbar">Ramais do DECEx</span>
 
-    <div class="campo-pesquisa">
+      <div class="filtros-container">
 
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filtro-item">
+          <mat-label>Nome de guerra</mat-label>
+          <mat-select (selectionChange)="onSearchTermChange($event.value)">
+            <input class="input-interno" (input)="filterSelectDePessoas($event)"
+                   placeholder="Filtrar..." (keydown)="$event.stopPropagation()">
+            <mat-option [value]="">Nenhum</mat-option>
+            @for (pessoa of pessoas; track pessoa) {
+              <mat-option [value]="pessoa.nomeGuerra">
+                {{ pessoa.postoGraduacao}} - {{ pessoa.nomeGuerra }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
 
-      <mat-form-field class="input-pesquisa-pessoa">
-        <mat-label>Pesquise pelo Nome de guerra</mat-label>
-        <mat-select (selectionChange)="onSearchTermChange($event.value)">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filtro-item">
+          <mat-label>Assessoria</mat-label>
+          <mat-select (selectionChange)="onAssessoriaFilterChange($event.value)">
+            <input class="input-interno" (input)="filterSelectDeAssessorias($event)"
+                   placeholder="Filtrar..." (keydown)="$event.stopPropagation()">
+            <mat-option [value]="">Nenhum</mat-option>
+            @for (assessoria of assessorias; track assessoria) {
+              <mat-option [value]="assessoria.sigla">
+                {{ assessoria.sigla }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
 
-          <input class="input-pesquisa" (input)="filterSelectDePessoas($event)"
-            placeholder="Digite ou selecione para filtrar" />
-          <mat-option [value]="">
-            Nenhum
-          </mat-option>
-          @for (pessoa of pessoas; track pessoa) {
-          <mat-option [value]="pessoa.nomeGuerra">
-            {{ pessoa.postoGraduacao}} - {{ pessoa.nomeGuerra }}
-          </mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
+        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="filtro-item">
+          <mat-label>Aniversariantes</mat-label>
+          <mat-select (selectionChange)="onAniversarianteChange($event.value)">
+            <mat-option [value]="">Todos</mat-option>
+            @for (mes of listaMeses; track mes.valor) {
+              <mat-option [value]="mes.valor">
+                {{ mes.nome }}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
 
-      <mat-form-field class="input-pesquisa-assessoria">
-        <mat-label>Pesquise pela Assessoria</mat-label>
-        <!-- <mat-select (selectionChange)="onSearchTermChange($event.value)"> -->
-        <mat-select (selectionChange)="onAssessoriaFilterChange($event.value)">
+      </div>
 
-          <input class="input-pesquisa" (input)="filterSelectDeAssessorias($event)"
-            placeholder="Digite ou selecione para filtrar" />
-          <mat-option [value]="">
-            Nenhum
-          </mat-option>
-          @for (assessoria of assessorias; track assessoria) {
-          <mat-option [value]="assessoria.sigla">
-            {{ assessoria.sigla }}
-          </mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field class="input-pesquisa-aniversario">
-        <mat-label>Aniversariantes do mês</mat-label>
-        <mat-select (selectionChange)="onAniversarianteChange($event.value)">
-
-          <mat-option [value]="">
-            Todos os meses
-          </mat-option>
-
-          @for (mes of listaMeses; track mes.valor) {
-          <mat-option [value]="mes.valor">
-            {{ mes.nome }}
-          </mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-
+      <button mat-mini-fab color="accent" (click)="exportarPdf()" matTooltip="Exportar PDF" class="botao-pdf">
+        <mat-icon>picture_as_pdf</mat-icon>
+      </button>
     </div>
-
-    <button mat-mini-fab color="accent" (click)="exportarPdf()" matTooltip="Exportar lista atual para PDF">
-      <mat-icon>picture_as_pdf</mat-icon>
-    </button>
 
   </mat-toolbar>
 
-  <div class="mat-elevation-z8">
+  <div class="mat-elevation-z8 content-wrapper">
     @if (pessoas$ | async; as pessoas) {
-    <app-pessoas-lista [pessoas]="pessoas.pessoas" (add)="onAdd()" (edit)="onEdit($event)"
-      (delete)="onRemove($event)"></app-pessoas-lista>
-    <!-- Quantidade de pessoas por paginas -->
-    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons [pageIndex]="pageIndex"
-      [pageSize]="pageSize" [length]="(pessoas$ | async)?.totalElements || 0" (page)="onPageChange($event)"
-      aria-label="Selecione a página de pessoas">
-    </mat-paginator>
+      <app-pessoas-lista 
+        [pessoas]="pessoas.pessoas" 
+        (add)="onAdd()" 
+        (edit)="onEdit($event)"
+        (delete)="onRemove($event)">
+      </app-pessoas-lista>
 
+      <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" 
+                     showFirstLastButtons 
+                     [pageIndex]="pageIndex"
+                     [pageSize]="pageSize" 
+                     [length]="(pessoas$ | async)?.totalElements || 0" 
+                     (page)="onPageChange($event)">
+      </mat-paginator>
 
     } @else {
-    <div class="loading-spinner">
-      <mat-spinner></mat-spinner>
-    </div>
-    }
-
-    <ng-template #loading>
       <div class="loading-spinner">
         <mat-spinner></mat-spinner>
       </div>
-    </ng-template>
+    }
   </div>
 </mat-card>

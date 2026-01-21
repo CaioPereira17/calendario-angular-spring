@@ -1,72 +1,145 @@
+/* Card Principal */
 mat-card {
-  max-width: 90%;
-  margin: 2em auto;
-  text-align: center;
-
+  max-width: 98%;
+  margin: 1em auto;
+  padding: 0;
+  overflow: hidden;
 }
 
-.column-flex {
+/* ============================================================
+   TOOLBAR RESPONSIVA (DESKTOP)
+   ============================================================ */
+.toolbar-responsiva {
+  height: auto !important; /* Permite crescer se precisar */
+  min-height: 64px;
+  padding: 10px 16px;
+  display: block; /* Estrutura base */
+}
+
+.toolbar-content {
   display: flex;
-  flex-direction: column;
-  min-width: 600px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
 }
 
-mat-toolbar {
-  max-width: 100%;
-  margin-bottom: 3px;
-  text-justify: auto;
-
+.titulo-toolbar {
+  font-size: 1.2rem;
+  font-weight: 500;
+  white-space: nowrap;
+  margin-right: 10px;
 }
 
+/* Container dos Filtros */
+.filtros-container {
+  display: flex;
+  flex: 1; /* Ocupa o meio */
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap; /* Permite quebrar linha em telas médias */
+}
 
+/* Estilo dos Campos de Filtro */
+.filtro-item {
+  width: 200px; /* Largura base */
+  font-size: 14px;
+}
 
-.loading-spinner {
-  padding: 25px;
-  background: rgb(0, 0, 0, 0.15);
+/* FORÇAR COR BRANCA NOS INPUTS DENTRO DA TOOLBAR AZUL */
+::ng-deep .toolbar-responsiva .mat-mdc-form-field {
+  
+  /* Fundo branco no input */
+  .mat-mdc-text-field-wrapper {
+    background-color: white !important;
+    border-radius: 4px;
+    padding: 0 12px; 
+    /* Removemos height fixa para não cortar o texto */
+  }
+
+  /* Ajuste de cor do Label e Texto */
+  .mat-mdc-floating-label {
+    color: rgba(0,0,0,0.6) !important;
+    top: 50% !important; /* Centraliza label verticalmente */
+  }
+  
+  /* Cor do Select */
+  .mat-mdc-select-value {
+    color: black !important;
+  }
+  
+  /* Ícone da seta (dropdown) */
+  .mat-mdc-select-arrow {
+    color: rgba(0,0,0,0.6) !important;
+  }
+}
+
+/* Input interno do select */
+.input-interno {
+  width: 90%;
+  margin: 8px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* CORREÇÃO DO BOTÃO PDF */
+.botao-pdf {
+  flex-shrink: 0; /* IMPEDE O BOTÃO DE SER ESMAGADO */
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.campo-pesquisa {
-
-  width: 85%;
-  margin-top: 30px;
-
+/* Loading */
+.loading-spinner {
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.05);
 }
 
-.input-pesquisa-pessoa {
-  width: 25%;
-  margin: 10px;
-  align-items: center;
-}
+/* ============================================================
+   MOBILE (CELULAR - max 768px)
+   ============================================================ */
+@media (max-width: 768px) {
+  
+  .toolbar-content {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 10px 0;
+  }
 
-.input-pesquisa-assessoria {
-  width: 20%;
-  margin: 10px;
-  align-items: center;
-}
+  .filtros-container {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
 
-.input-pesquisa::placeholder {
-  font-size: 15px;
-  padding: 10px;
-  margin: 10px;
+  .filtro-item {
+    width: 100% !important;
+  }
 
-}
+  .titulo-toolbar {
+    text-align: center;
+    margin: 0;
+    margin-bottom: 5px;
+  }
 
-.input-pesquisa {
+  /* Botão PDF vira barra larga no final */
+  .botao-pdf {
+    width: 100%;
+    border-radius: 4px;
+    margin-top: 5px;
+  }
 
-  width: 88%;
-  height: 8%;
-  padding: 10px;
-  margin: 10px;
-
-
-}
-
-.input-pesquisa-aniversario {
-
-  width: 20%;
-  margin: 10px;
-  align-items: center;
+  mat-card {
+    max-width: 100%;
+    margin: 0;
+  }
 }
